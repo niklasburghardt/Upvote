@@ -1,3 +1,5 @@
 from django.contrib import admin
-
-# Register your models here.
+from .models import Votable, Comment, Upvote
+admin.site.register(Votable)
+admin.site.register(Comment)
+admin.site.register(Upvote)

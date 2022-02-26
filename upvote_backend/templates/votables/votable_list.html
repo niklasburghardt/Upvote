@@ -1,0 +1,7 @@
+{% extends 'base.html' %} {% block title %}
+<title>Upvote | Vote it Up</title>
+{% endblock title %} {% block content %} {% for votable in data %}
+<div><h3>@{{votable.user.username}} - {{votable.created|timesince}}</h3></div>
+<div>{{votable.content}}</div>
+
+{% endfor %} {% endblock content %}

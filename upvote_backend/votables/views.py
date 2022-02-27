@@ -8,9 +8,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
-from votables.mixins import OwnerPermissionMixin
+from api.mixins import OwnerPermissionMixin
 
-from votables.permissions import IsOwnerOrReadOnly
+from api.permissions import IsOwnerOrReadOnly
 from .models import Like, Votable, Comment, Upvote
 from .serializers import UserSerializer, VotableSerializer
 from votables import serializers
@@ -33,7 +33,7 @@ class UserPosts(APIView):
         votables = Votable.objects.filter(user__username=username)
         serializer = VotableSerializer(votables, many=True)
         return Response(serializer.data)
-
+    
 
 class VotableList(generics.ListCreateAPIView):
     queryset = Votable.objects.all()

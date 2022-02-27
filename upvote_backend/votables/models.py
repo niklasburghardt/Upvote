@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-<<<<<<< HEAD
+
 class Votable(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.CharField(max_length=255)
@@ -11,7 +11,7 @@ class Votable(models.Model):
 
 class Upvote(models.Model):
      user = models.ForeignKey(User, on_delete=models.CASCADE)
-     votable = models.ForeignKey(Votable) #on delete user gets back paid upvotes
+     votable = models.ForeignKey(Votable, on_delete=models.CASCADE) #on delete user gets back paid upvotes
      paid = models.IntegerField()
      upvote_score = models.IntegerField()
      active = models.BooleanField()
@@ -20,7 +20,7 @@ class Upvote(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    votable = models.ForeignKey(Votable) #on delete user gets back paid upvotes
+    votable = models.ForeignKey(Votable, on_delete=models.CASCADE) #on delete user gets back paid upvotes
     content = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -28,7 +28,7 @@ class Comment(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-=======
+
 
 class Votable(models.Model):
     user = models.ForeignKey(
@@ -62,9 +62,6 @@ class Comment(models.Model):
     content = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-<<<<<<< HEAD
->>>>>>> 6da0a6b3612cb954dc21de50c50adae365acf267
-=======
 
 
 class Like(models.Model):
@@ -72,4 +69,3 @@ class Like(models.Model):
         User, on_delete=models.CASCADE, null=False, blank=False)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
->>>>>>> 662c3e1395ae6d8594afb11f4704b38575fe9b51

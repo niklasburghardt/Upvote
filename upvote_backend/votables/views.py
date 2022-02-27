@@ -1,26 +1,54 @@
+
+
+from django.http import Http404
 from django.shortcuts import render
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import viewsets, status, mixins, generics
+from rest_framework import permissions, authentication
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from django.contrib.auth.models import User
-from .models import Votable, Comment, Upvote
-from .serializers import VotableSerializer, CommentSerializer, UpvoteSerializer, UserSerializer
+from votables.mixins import OwnerPermissionMixin
+
+from votables.permissions import IsOwnerOrReadOnly
+from .models import Like, Votable, Comment, Upvote
+from .serializers import UserSerializer, VotableSerializer
+from votables import serializers
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
-class VotableViewSet(viewsets.ModelViewSet):
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserPosts(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, username):
+        votables = Votable.objects.filter(user__username=username)
+        serializer = VotableSerializer(votables, many=True)
+        return Response(serializer.data)
+
+
+class VotableList(generics.ListCreateAPIView):
     queryset = Votable.objects.all()
     serializer_class = VotableSerializer
 
+    authentication_classes = [
+        authentication.SessionAuthentication, authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
-class UpvoteViewSet(viewsets.ModelViewSet):
-    queryset = Upvote.objects.all()
-    serializer_class = UpvoteSerializer
+class VotableDetail(OwnerPermissionMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = Votable.objects.all()
+    serializer_class = VotableSerializer
+    authentication_classes = [
+        authentication.SessionAuthentication, authentication.TokenAuthentication]

@@ -32,11 +32,10 @@ class Like(models.Model):
 
 class Votable(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=False, blank=False)
+        User, related_name="votables", on_delete=models.CASCADE, null=False, blank=False)
     content = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    upvotes = models.ManyToManyField("Upvote", null=True, blank=True)
 
     def __str__(self):
         return self.content[0:50]
@@ -44,17 +43,33 @@ class Votable(models.Model):
 
 class Upvote(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=False, blank=False)
-    amount = models.IntegerField()
+        User, on_delete=models.CASCADE)
+    votable = models.ForeignKey(
+        Votable, on_delete=models.PROTECT)
+
+    paid = models.IntegerField()
+    upvote_score = models.IntegerField()
+    active = models.BooleanField()
+    sold = models.IntegerField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    isActive = models.BooleanField()
     terminated = models.DateTimeField(blank=True, null=True)
 
 
 class Comment(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=False, blank=False)
+    votable = models.ForeignKey(Votable, on_delete=models.CASCADE)
     content = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+<<<<<<< HEAD
 >>>>>>> 6da0a6b3612cb954dc21de50c50adae365acf267
+=======
+
+
+class Like(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=False, blank=False)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+>>>>>>> 662c3e1395ae6d8594afb11f4704b38575fe9b51

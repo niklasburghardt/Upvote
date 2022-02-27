@@ -1,12 +1,19 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
+import httpCommon from "./http-common";
 function App() {
   const [version, setVersion] = useState();
-  axios.get("http://127.0.0.1:8000/api/userposts/tim").then((result) => {
-    console.log(result.data);
+  const url = "http://localhost:8000/api/votables";
+  const options = {
+    method: "get",
+    headers: {
+      ContentType: "application/json",
+    },
+  };
+  fetch(url, options).then((result) => {
+    console.log(result);
   });
-  return <div className="App"></div>;
+  return <div className="App">Nice</div>;
 }
 
 export default App;

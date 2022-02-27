@@ -4,6 +4,7 @@ from django.contrib import admin
 
 urlpatterns = [
     path("api/", include("votables.urls")),
-    path("admin/", admin.site.urls)
+    path("admin/", admin.site.urls),
+    path("api/v2/", include('upvote_backend.routers'))
 
 ]

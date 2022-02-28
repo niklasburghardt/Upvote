@@ -21,8 +21,6 @@ class VotableList(generics.ListCreateAPIView):
     queryset = Votable.objects.all()
     serializer_class = VotableSerializer
 
-    authentication_classes = [
-        authentication.SessionAuthentication, authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):

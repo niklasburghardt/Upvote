@@ -8,32 +8,14 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
-from api.mixins import OwnerPermissionMixin
+from api.mixins import FromUserQuerySetMixin, OwnerPermissionMixin
 
 from api.permissions import IsOwnerOrReadOnly
 from .models import Like, Votable, Comment, Upvote
-from .serializers import UserSerializer, VotableSerializer
+from users.serializers import UserSerializer
+from .serializers import VotableSerializer
 from votables import serializers
 
-
-class UserList(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserPosts(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request, username):
-        votables = Votable.objects.filter(user__username=username)
-        serializer = VotableSerializer(votables, many=True)
-        return Response(serializer.data)
-    
 
 class VotableList(generics.ListCreateAPIView):
     queryset = Votable.objects.all()
@@ -45,6 +27,10 @@ class VotableList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class MyVotablesList(FromUserQuerySetMixin, VotableList):
+    pass
 
 
 class VotableDetail(OwnerPermissionMixin, generics.RetrieveUpdateDestroyAPIView):

@@ -1,5 +1,4 @@
 
-
 from django.http import Http404
 from django.shortcuts import render
 from rest_framework import viewsets, status, mixins, generics
@@ -34,5 +33,3 @@ class MyVotablesList(FromUserQuerySetMixin, VotableList):
 class VotableDetail(OwnerPermissionMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Votable.objects.all()
     serializer_class = VotableSerializer
-    authentication_classes = [
-        authentication.SessionAuthentication, authentication.TokenAuthentication]

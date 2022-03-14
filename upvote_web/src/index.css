@@ -1,17 +1,37 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css");
 
 body {
-  margin: 0;
+  --main-background: #000912;
+  --second-background: #0b1926;
+  --hover-background: #172430;
+  --divider-color: #455e75;
+  --white: #f2f2f2;
+  --main-grey-color: #6989a3;
+  --main-color: #0079f2;
+  --second-color: #489cf0;
+  /* --like-color: #c82b4d; */
+  --like-color: #c0397c;
+
+  --comment-color: #39c093;
+  --share-color: #55a9da;
+  --repost-color: #daa755;
+
+  --header-font: "Share Tech", "Segoe UI";
+  --upvote-font: "Roboto", sans-serif;
+  color: var(--white);
+  background-color: var(--main-background);
+  margin: 0px 8px;
+  padding: 0px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+a {
+  text-decoration: none;
+  color: white;
 }

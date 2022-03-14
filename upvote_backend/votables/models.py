@@ -24,7 +24,8 @@ class Upvote(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # on delete user gets back paid upvotes
-    votable = models.ForeignKey(Votable, on_delete=models.CASCADE)
+    votable = models.ForeignKey(
+        Votable, on_delete=models.CASCADE, related_name="comment")
     content = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -32,7 +33,9 @@ class Comment(models.Model):
 
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    comment = models.ForeignKey(
+        Comment, on_delete=models.CASCADE, related_name="likes")
+    created = models.DateTimeField(auto_now_add=True)
 
 
 class Votable(models.Model):

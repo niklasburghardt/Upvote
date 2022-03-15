@@ -92,10 +92,10 @@ function HomePageVotable(props) {
                 <Image src="/images/grand.jpg" />
             </Body>
             <Actions>
-                <IconLabelButton value={2313} icon="bi-arrow-up-square" onClick={deleteUpvote} hover="white" />
+                <IconLabelButton value={props.upvotes ? props.upvotes : 0} icon="bi-arrow-up-square" onClick={deleteUpvote} hover="white" />
                 <IconLabelButton value={props.comments} icon="bi-chat" hover="var(--comment-color)" />
-                <IconLabelButton value={2313} icon="bi-link" hover="var(--share-color)" />
-                <IconLabelButton value={2313} icon="bi-arrow-return-right" hover="var(--repost-color)" />
+                <IconLabelButton value={props.shared ? props.shared : 0} icon="bi-link" hover="var(--share-color)" />
+                <IconLabelButton value={props.stories ? props.stories : 0} icon="bi-arrow-return-right" hover="var(--repost-color)" />
             </Actions>
             {/* <div>
                 <button onClick={deleteUpvote} className='hover:bg-blue-100 hover:rounded transition-all bg-white p-2 focus:bg-blue-300'>Delete</button>

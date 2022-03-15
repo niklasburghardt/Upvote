@@ -27,7 +27,8 @@ function Home() {
     const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery('votables', ({ pageParam = "votables/" }) => load(pageParam),
 
         {
-            getNextPageParam: (lastPage, allPages) => lastPage.next
+            getNextPageParam: (lastPage, allPages) => lastPage.next,
+            //refetchInterval: 5000,
         })
 
     const deleteVotable = useMutation(votable => {
@@ -115,7 +116,7 @@ function Home() {
             <div>
                 {data.pages.map((group, i) => (
                     <React.Fragment key={i}>
-                        {group.results.map(result => (<HomePageVotable last_name={result.last_name} first_name={result.first_name} username={result.user} content={result.content} created={result.created} updated={result.updated} comments={result.comments} id={result.id} delete={deleteVotable.mutate}></HomePageVotable>))}
+                        {group.results.map(result => (<HomePageVotable last_name={result.last_name} first_name={result.first_name} username={result.user} content={result.content} created={result.created} updated={result.updated} comments={result.comments} upvotes={result.upvotes.paid__sum} shared={result.shares} stories={result.stories} id={result.id} delete={deleteVotable.mutate}></HomePageVotable>))}
                     </React.Fragment>
                 ))}
             </div>

@@ -25,7 +25,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <AppBody>
 
-            {/* <Header /> */}
+            <Header />
             <Navigation />
             <Routes>
               <Route element={<MainSection page={<Home />} title="Home" />} path="/" exact />

@@ -54,10 +54,10 @@ function VotableDetail() {
 
             </Body>
             <Actions>
-                <IconLabelButton value={2313} icon="bi-arrow-up-square" hover="white" />
+                <IconLabelButton value={data.upvotes.paid__sum ? data.upvotes.paid__sum : 0} icon="bi-arrow-up-square" hover="white" />
                 <IconLabelButton value={data.comments} icon="bi-chat" hover='var(--comment-color)' />
-                <IconLabelButton value={2313} icon="bi-link" hover='var(--share-color)' />
-                <IconLabelButton value={2313} icon="bi-arrow-return-right" hover='var(--repost-color)' />
+                <IconLabelButton value={data.shares} icon="bi-link" hover='var(--share-color)' />
+                <IconLabelButton value={data.stories} icon="bi-arrow-return-right" hover='var(--repost-color)' />
             </Actions>
 
             <Comments id={id} />

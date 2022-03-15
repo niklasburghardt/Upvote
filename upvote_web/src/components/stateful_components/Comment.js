@@ -1,18 +1,25 @@
 import styled from 'styled-components'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
 import IconButton from './IconButton'
 import IconLabelButton from './IconLabelButton'
+import AuthContext from '../../context/AuthContext'
+import { likeComment } from '../../axios/AxiosInstance'
+
 TimeAgo.addDefaultLocale(en)
 
 function Comment(props) {
     const timeAgo = new TimeAgo()
     const [liked, setLiked] = useState(props.liked)
+    const { tokens } = useContext(AuthContext)
+
     const toggleLiked = () => {
         setLiked(!liked)
+        console.log(likeComment(1, tokens.access))
     }
+
     return (
         <Container>
             <div className='hor'></div>

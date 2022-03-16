@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react'
 import { useMutation } from 'react-query'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import api from '../../axios/AxiosInstance'
+import api, { upvoteVotable } from '../../axios/AxiosInstance'
 import AuthContext from '../../context/AuthContext'
 import IconButton from './IconButton'
 import IconLabelButton from './IconLabelButton'
@@ -92,7 +92,7 @@ function HomePageVotable(props) {
                 <Image src="/images/grand.jpg" />
             </Body>
             <Actions>
-                <IconLabelButton value={props.upvotes ? props.upvotes : 0} icon="bi-arrow-up-square" onClick={deleteUpvote} hover="white" />
+                <IconLabelButton value={props.upvotes ? props.upvotes : 0} icon="bi-arrow-up-square" onClick={() => upvoteVotable(tokens.access, props.id, 100)} hover="white" />
                 <IconLabelButton value={props.comments} icon="bi-chat" hover="var(--comment-color)" />
                 <IconLabelButton value={props.shared ? props.shared : 0} icon="bi-link" hover="var(--share-color)" />
                 <IconLabelButton value={props.stories ? props.stories : 0} icon="bi-arrow-return-right" hover="var(--repost-color)" />

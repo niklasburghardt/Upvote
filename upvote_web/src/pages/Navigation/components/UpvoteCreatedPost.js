@@ -1,13 +1,19 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { CircularProgress } from '@mui/material';
+import { postVotable, upvoteVotable } from '../../../axios/AxiosInstance';
+import AuthContext from '../../../context/AuthContext';
 
 function UpvoteCreatedPost({ dismiss, back, text }) {
     const [upvotes, setUpvotes] = useState(0);
     const [loading, setLoading] = useState(false);
-    const post = (e) => {
-        console.log("post")
-
+    const { tokens } = useContext(AuthContext)
+    const post = async (e) => {
+        e.preventDefault()
+        const result = await postVotable(tokens.access, text, upvotes)
+        console.log(result)
+        const upvote = await upvoteVotable(tokens.acces, result.id, upvotes)
+        dismiss()
     }
     const increment = (num) => {
         setUpvotes(upvotes + num);

@@ -10,17 +10,22 @@ function Comments(props) {
         console.log("results", result)
         return result.data
     }
-    const { data, status } = useQuery("comments", loadComments)
+    const { data, status, refetch } = useQuery("comments", loadComments)
     if (status === "loading") {
         return <div>Loading...</div>
+    }
+    const doRefetch = () => {
+        refetch()
     }
 
     return (
         <Container>
+
             {data ? data.results.map((comment) => {
-                return <Comment content={comment.content} user={comment.user} first_name={comment.first_name} last_name={comment.last_name} created={comment.created} updated={comment.updated} likes={comment.likes} liked={comment.liked}></Comment>
+                return <Comment refetch={doRefetch} content={comment.content} user={comment.user} first_name={comment.first_name} last_name={comment.last_name} created={comment.created} updated={comment.updated} likes={comment.likes} liked={comment.liked} id={comment.id}></Comment>
             }) : <div>Be the first to comment</div>}
-        </Container>
+
+        </Container >
     )
 }
 const Container = styled.div`

@@ -12,12 +12,17 @@ TimeAgo.addDefaultLocale(en)
 
 function Comment(props) {
     const timeAgo = new TimeAgo()
-    const [liked, setLiked] = useState(props.liked)
+
     const { tokens } = useContext(AuthContext)
 
-    const toggleLiked = () => {
-        setLiked(!liked)
-        console.log(likeComment(1, tokens.access))
+    const toggleLiked = async () => {
+
+        const result = await likeComment(props.id, tokens.access).then(props.refetch())
+        if (result.ok) {
+            return await props.refetch()
+        }
+
+
     }
 
     return (
@@ -44,7 +49,7 @@ function Comment(props) {
             <Body>
                 {props.content}
                 <Actions>
-                    <IconLabelButton value={props.likes} icon={liked ? "bi-heart-fill" : "bi-heart"} hover="var(--like-color)" color={liked ? "var(--like-color)" : ""} onClick={toggleLiked} />
+                    <IconLabelButton value={props.likes} icon={props.liked ? "bi-heart-fill" : "bi-heart"} hover="var(--like-color)" color={props.liked ? "var(--like-color)" : ""} onClick={toggleLiked} />
                     <IconLabelButton value={2313} icon="bi-chat" hover="var(--comment-color)" />
 
 

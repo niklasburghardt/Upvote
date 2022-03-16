@@ -58,6 +58,8 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class LikeSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.id')
+
     class Meta:
         model = Like
         fields = '__all__'
@@ -66,6 +68,7 @@ class LikeSerializer(serializers.ModelSerializer):
 class UpvoteSerializer(serializers.ModelSerializer):
     # calculate current upvote score with likes, comments, upvotes etc.
     current_score = serializers.SerializerMethodField()
+    user = serializers.ReadOnlyField(source='user.id')
 
     class Meta:
         model = Upvote

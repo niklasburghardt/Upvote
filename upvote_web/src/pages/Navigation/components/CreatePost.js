@@ -1,5 +1,6 @@
 import { Backdrop } from '@mui/material';
 import React, { useState } from 'react'
+import { CircularProgressbar } from 'react-circular-progressbar';
 import styled from 'styled-components'
 import UpvoteCreatedPost from './UpvoteCreatedPost';
 
@@ -32,9 +33,12 @@ function CreatePost({ dismiss }) {
                         <Action src="/icons/at.svg" />
 
                     </div>
-                    <PostButton onClick={post}>
-                        NEXT
-                    </PostButton>
+                    <div className="end">
+                        <Progress>{text.length}</Progress>
+                        <PostButton onClick={post}>
+                            NEXT
+                        </PostButton>
+                    </div>
                 </Actions>
             </form>
             <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 2 }} open={upvoteOpen}>
@@ -43,6 +47,19 @@ function CreatePost({ dismiss }) {
         </Container>
     )
 }
+const Progress = styled.div`
+    
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip: rect(0px, 100px, 100px, 50px);
+
+`
 const Container = styled.div`
     width: 33%;
     min-width: 600px;
@@ -64,6 +81,9 @@ const Container = styled.div`
                 border-radius: 50%;
             }
         }
+    }
+    .progress{
+        color: white;
     }
 `
 const UserPicture = styled.img`
@@ -92,6 +112,7 @@ const PostButton = styled.button`
     border: none;
     padding: 15px 30px;
     border-radius: 20px;
+    margin-left: 4px;
     cursor: pointer;
     transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     :hover{
@@ -107,6 +128,9 @@ const Actions = styled.div`
         display: flex;
         align-items: center;
         justify-content: space-evenly;
+    }
+    .end{
+        display: flex;
     }
 `
 const Action = styled.img`

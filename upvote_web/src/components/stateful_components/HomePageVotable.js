@@ -8,6 +8,11 @@ import api, { upvoteVotable } from '../../axios/AxiosInstance'
 import AuthContext from '../../context/AuthContext'
 import IconButton from './IconButton'
 import IconLabelButton from './IconLabelButton'
+import VotableHeader from './VotableHeader'
+import VotableBody from './VotableBody'
+import UpvotePost from './UpvotePost'
+import CommentPost from './CommentPost'
+import { InputField } from './InputField'
 TimeAgo.addDefaultLocale(en)
 
 function HomePageVotable(props) {
@@ -16,6 +21,8 @@ function HomePageVotable(props) {
     const [comments, setComments] = useState(null)
     const [inputComment, setInputComment] = useState(null)
     const [noComments, setNoComments] = useState(null)
+    const [upvote, setUpvote] = useState(false)
+    const [commentOpen, setComment] = useState(false)
     const timeAgo = new TimeAgo()
 
     const commentUpvote = useMutation(() => {
@@ -39,7 +46,7 @@ function HomePageVotable(props) {
     const loadComments = async () => {
         api.get(`/votables/${props.id}/comments/`).then(result => {
             if (result.status === 200) {
-                setComments(result.data.results)
+                setComments(result.props.results)
             }
             console.log(result)
         })
@@ -70,7 +77,7 @@ function HomePageVotable(props) {
     return (
 
         <Container >
-            <Header>
+            {/* <Header>
                 <Link className='username' to={"" + props.username}><ProfilePicture src="/images/obama.jpg" /></Link>
 
                 <div className='user-info'>
@@ -86,14 +93,16 @@ function HomePageVotable(props) {
                     </div>
                 </div>
 
-            </Header>
-            <Body onClick={navigate}>
+            </Header> */}
+            <VotableHeader first_name={props.first_name} last_name={props.last_name} username={props.username} created={props.created} updated={props.updated} />
+            {/* <Body onClick={navigate}>
                 {props.content}
                 <Image src="/images/grand.jpg" />
-            </Body>
+            </Body> */}
+            <VotableBody content={props.content} navigate={navigate} />
             <Actions>
-                <IconLabelButton value={props.upvotes ? props.upvotes : 0} icon="bi-arrow-up-square" onClick={() => upvoteVotable(tokens.access, props.id, 100)} hover="white" />
-                <IconLabelButton value={props.comments} icon="bi-chat" hover="var(--comment-color)" />
+                <IconLabelButton value={props.upvotes ? props.upvotes : 0} icon="bi-arrow-up-square" onClick={() => setUpvote(true)} hover="white" />
+                <IconLabelButton value={props.comments} icon="bi-chat" hover="var(--comment-color)" onClick={() => setComment(true)} />
                 <IconLabelButton value={props.shared ? props.shared : 0} icon="bi-link" hover="var(--share-color)" />
                 <IconLabelButton value={props.stories ? props.stories : 0} icon="bi-arrow-return-right" hover="var(--repost-color)" />
             </Actions>
@@ -103,6 +112,8 @@ function HomePageVotable(props) {
                 <input type="text" onChange={(e) => setInputComment(e.target.value)} />
                 <button onClick={commentUpvote.mutate} className='hover:bg-blue-100 hover:rounded transition-all bg-white p-2 focus:bg-blue-300'>Comment</button>
             </div> */}
+            <InputField page={<UpvotePost id={props.id} content={props.content} username={props.username} first_name={props.first_name} last_name={props.last_name} created={props.created} updated={props.updated} image={props.image} dismiss={() => setUpvote(false)} />} open={upvote} />
+            <InputField page={<CommentPost id={props.id} content={props.content} username={props.user} first_name={props.first_name} last_name={props.last_name} created={props.created} updated={props.updated} image={props.image} dismiss={() => setComment(false)} />} open={commentOpen} />
 
         </Container >
 

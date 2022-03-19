@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
     let [user, setUser] = useState(() => localStorage.getItem("authTokens") ? jwt_decode(localStorage.getItem("authTokens")) : null)
     let [authTokens, setAuthTokens] = useState(() => localStorage.getItem("authTokens") ? JSON.parse(localStorage.getItem("authTokens")) : null)
     let [loading, setLoading] = useState(true)
+    let [userInfo, setUserInfo] = useState()
 
     const history = useNavigate()
     let loginUser = async (e) => {
@@ -30,14 +31,28 @@ export const AuthProvider = ({ children }) => {
             setAuthTokens(data)
             setUser(jwt_decode(data.access))
             localStorage.setItem("authTokens", JSON.stringify(data))
+            let userInfo = await fetch("http://localhost:8000/api/users/self/", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + data.access
+                }
+            })
+            let userData = await userInfo.json()
+            if (userInfo.status === 200) {
+                setUserInfo(userData.results[0])
+            }
         } else {
             alert("Something went wrong")
+            return
         }
+
     }
     let logoutUser = () => {
         setAuthTokens(null)
         setUser(null)
         localStorage.removeItem("authTokens")
+        setUserInfo(null)
 
     }
 
@@ -58,6 +73,18 @@ export const AuthProvider = ({ children }) => {
             setAuthTokens(data)
             setUser(jwt_decode(data.access))
             localStorage.setItem("authTokens", JSON.stringify(data))
+            let userInfo = await fetch("http://localhost:8000/api/users/self/", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + data.access
+                }
+            })
+            let userData = await userInfo.json()
+            if (userInfo.status === 200) {
+                console.log("info", userData.results[0])
+                setUserInfo(userData.results[0])
+            }
         } else {
             logoutUser()
         }
@@ -70,6 +97,7 @@ export const AuthProvider = ({ children }) => {
         tokens: authTokens,
         loginUser: loginUser,
         logoutUser: logoutUser,
+        userInfo: userInfo
 
     }
     useEffect(() => {

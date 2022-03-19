@@ -7,10 +7,14 @@ import { QueryClient, useInfiniteQuery, useMutation, useQuery, useQueryClient } 
 import { BarLoader, BounceLoader, CircleLoader, MoonLoader, RotateLoader, SyncLoader } from 'react-spinners'
 
 import styled from 'styled-components'
+import { InputField } from '../../components/stateful_components/InputField'
+import UpvotePost from '../../components/stateful_components/UpvotePost'
 
-function Home() {
+function Home({ followPage }) {
     const [myData, setData] = useState()
     const [loaded, setLoaded] = useState(false)
+    const [upvote, setUpvote] = useState(false)
+    const [upvoteProps, setUpvoteProps] = useState(false)
     const [nextUrl, setNextUrl] = useState("votables/")
     const { tokens } = useContext(AuthContext)
 
@@ -24,11 +28,13 @@ function Home() {
     const queryClient = useQueryClient()
 
 
-    const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery('votables', ({ pageParam = "votables/" }) => load(pageParam),
+    const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery('votables', ({ pageParam = "votables/"
+    }) => load(pageParam),
 
         {
             getNextPageParam: (lastPage, allPages) => lastPage.next,
-            //refetchInterval: 5000,
+
+            // refetchInterval: 5000,
         })
 
     const deleteVotable = useMutation(votable => {
@@ -101,6 +107,10 @@ function Home() {
         data = data.filter(item => !(item.id == id))
         setData(data)
     }
+    const openUpvote = (props) => {
+        setUpvote(!upvote)
+        setUpvoteProps(props)
+    }
 
     return (
         <Container className="App ">
@@ -116,7 +126,7 @@ function Home() {
             <div>
                 {data.pages.map((group, i) => (
                     <React.Fragment key={i}>
-                        {group.results.map(result => (<HomePageVotable last_name={result.last_name} first_name={result.first_name} username={result.user} content={result.content} created={result.created} updated={result.updated} comments={result.comments} upvotes={result.upvotes.paid__sum} shared={result.shares} stories={result.stories} id={result.id} delete={deleteVotable.mutate}></HomePageVotable>))}
+                        {group.results.map(result => (<HomePageVotable openUpvote={openUpvote} last_name={result.last_name} first_name={result.first_name} username={result.user} content={result.content} created={result.created} updated={result.updated} comments={result.comments} upvotes={result.upvotes.paid__sum} shared={result.shares} stories={result.stories} id={result.id} delete={deleteVotable.mutate}></HomePageVotable>))}
                     </React.Fragment>
                 ))}
             </div>
@@ -127,6 +137,8 @@ function Home() {
                         ? 'Load More'
                         : 'Nothing more to load'}</button>
             </div>
+            
+
         </Container>
     );
 }

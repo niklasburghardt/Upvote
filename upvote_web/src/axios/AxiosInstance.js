@@ -27,7 +27,7 @@ const likeComment = async (comment, auth) => {
     console.log("mynice", response)
     return response
 }
-const postVotable = async (auth, content, upvotes) => {
+const postVotable = async (auth, content, image, upvotes) => {
     const options = {
         method: "POST",
         headers: {
@@ -37,9 +37,25 @@ const postVotable = async (auth, content, upvotes) => {
         body: JSON.stringify({
             "content": content,
             "upvotes": upvotes,
+
         })
     }
     const response = await fetch("http://localhost:8000/api/votables/", options)
+    return response.json()
+}
+const postComment = async (auth, content, image, votable) => {
+    const options = {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + auth,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "content": content,
+            "votable": votable,
+        })
+    }
+    const response = await fetch("http://localhost:8000/api/votables/" + votable + "/comments/", options)
     return response.json()
 }
 const upvoteVotable = async (auth, votable, amount) => {
@@ -61,4 +77,4 @@ const upvoteVotable = async (auth, votable, amount) => {
     return response
 }
 export default api
-export { likeComment, postVotable, upvoteVotable }
+export { likeComment, postVotable, upvoteVotable, postComment }

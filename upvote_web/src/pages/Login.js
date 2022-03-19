@@ -26,9 +26,10 @@ function Login() {
                 console.log(json)
             })
         }
+
     }
     return (
-        <div className='flex-wrap'>
+        <div className='flex-wrap' >
             <form onSubmit={loginUser}>
                 <input type="text" name='username' onChange={(e) => setUsername(e.target.value)} className="border rounded shadow-sm focus:bg-blue-50" />
                 <input type="password" name='password' onChange={(e) => setPassword(e.target.value)} className="border rounded shadow-sm focus:bg-blue-50" />

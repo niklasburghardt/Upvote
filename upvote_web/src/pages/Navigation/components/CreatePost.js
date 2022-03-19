@@ -1,24 +1,40 @@
 import { Backdrop } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import styled from 'styled-components'
-import UpvoteCreatedPost from './UpvoteCreatedPost';
+import { postVotable, upvoteVotable } from '../../../axios/AxiosInstance';
+import { InputField } from '../../../components/stateful_components/InputField';
+import AuthContext from '../../../context/AuthContext';
+import UpvoteCreatedPost from '../../../components/stateful_components/UpvotePost';
 
 function CreatePost({ dismiss }) {
 
-
+    const [image, setImage] = useState()
     const [upvoteOpen, openUpvote] = useState(false);
     const [text, setText] = useState("");
-    const post = (e) => {
-        e.preventDefault();
+    const { tokens } = useContext(AuthContext)
+
+
+    const post = async (e) => {
+        e.preventDefault()
+        const result = await postVotable(tokens.access, text, image)
+        console.log(result)
+        const upvote = await upvoteVotable(tokens.acces, result.id)
 
         openUpvote(true)
     }
     const toggleUpvote = (e) => {
         openUpvote(!upvoteOpen);
     }
+    const handleFileChange = (event) => {
+        if (event.target.files[0]) {
+            let image = event.target.files[0]
+            setImage(URL.createObjectURL(image))
+        }
+        console.log(event.target.files[0])
+    }
     return (
-        <Container>
+        <>
             <form action="">
                 <div className='post-head'>
                     <UserPicture src="/images/obama.jpg" />
@@ -28,7 +44,7 @@ function CreatePost({ dismiss }) {
 
                 <Actions>
                     <div className='text-actions'>
-                        <Action src="/icons/image.svg" />
+                        <input type="file" name='postImage' onChange={handleFileChange} />
                         <Action src="/icons/hash.svg" />
                         <Action src="/icons/at.svg" />
 
@@ -41,10 +57,11 @@ function CreatePost({ dismiss }) {
                     </div>
                 </Actions>
             </form>
-            <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 2 }} open={upvoteOpen}>
-                <UpvoteCreatedPost dismiss={dismiss} back={toggleUpvote} text={text} />
-            </Backdrop>
-        </Container>
+            {/* <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 2 }} open={upvoteOpen}>
+                <UpvoteCreatedPost dismiss={dismiss} back={toggleUpvote} text={text} image={image} />
+            </Backdrop> */}
+            <InputField open={upvoteOpen} page={<UpvoteCreatedPost dismiss={dismiss} back={toggleUpvote} text={text} image={image} />} />
+        </>
     )
 }
 const Progress = styled.div`

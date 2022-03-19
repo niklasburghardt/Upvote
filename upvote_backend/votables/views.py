@@ -23,7 +23,22 @@ class VotableList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        try:
+            image = self.request.data["image"]
+        except:
+            image = None
+        serializer.save(user=self.request.user, image=image)
+
+
+class VotableListFollowed(generics.ListAPIView):
+    queryset = Votable.objects.all()
+    serializer_class = VotableSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if not self.request.user:
+            return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Please Login"})
+        return qs.filter(user=self.request.user)
 
 
 class VotableDetail(OwnerPermissionMixin, generics.RetrieveUpdateDestroyAPIView):
@@ -59,6 +74,7 @@ class CommentForUpvote(generics.ListCreateAPIView):
 class LikeComment(generics.ListCreateAPIView):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
+    lookup_field = "pk"
 
     def perform_create(self, serializer):
         comment = self.request.data["comment"]
@@ -69,6 +85,10 @@ class LikeComment(generics.ListCreateAPIView):
             existing.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         serializer.save(user=user)
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(comment__id=self.kwargs["pk"])
 
 
 class ShareVotable(generics.ListCreateAPIView):
@@ -87,6 +107,10 @@ class ShareVotable(generics.ListCreateAPIView):
             existing.delete()
         serializer.save(sent=self.request.user)
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(comment__id=self.kwargs["pk"])
+
 
 class StoryViewset(generics.ListCreateAPIView):
     queryset = Story.objects.all()
@@ -99,6 +123,10 @@ class StoryViewset(generics.ListCreateAPIView):
         if existing.exists():
             existing.delete()
         serializer.save(user=user)
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(comment__id=self.kwargs["pk"])
 
 
 class LikeViewset(generics.ListAPIView):

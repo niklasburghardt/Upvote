@@ -10,7 +10,9 @@ function Comments(props) {
         console.log("results", result)
         return result.data
     }
-    const { data, status, refetch } = useQuery("comments", loadComments)
+    const { data, status, refetch } = useQuery("comments", loadComments, {
+        refetchInterval: 5000,
+    })
     if (status === "loading") {
         return <div>Loading...</div>
     }

@@ -1,26 +1,30 @@
 import React, { useContext, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { CircularProgress } from '@mui/material';
-import { postVotable, upvoteVotable } from '../../../axios/AxiosInstance';
-import AuthContext from '../../../context/AuthContext';
+import { postVotable, upvoteVotable } from '../../axios/AxiosInstance';
+import AuthContext from '../../context/AuthContext';
+import VotableHeader from './VotableHeader'
+import VotableSmallBody from './VotableSmallBody';
+import IconButton from './IconButton';
 
-function UpvoteCreatedPost({ dismiss, back, text }) {
+function UpvotePost(props) {
     const [upvotes, setUpvotes] = useState(0);
     const [loading, setLoading] = useState(false);
     const { tokens } = useContext(AuthContext)
     const post = async (e) => {
         e.preventDefault()
-        const result = await postVotable(tokens.access, text, upvotes)
-        console.log(result)
-        const upvote = await upvoteVotable(tokens.acces, result.id, upvotes)
-        dismiss()
+
+        const upvote = await upvoteVotable(tokens.access, props.id, upvotes)
+        props.dismiss()
     }
     const increment = (num) => {
-        setUpvotes(upvotes + num);
-        console.log(upvotes)
+        if (upvotes + num >= 0) {
+            setUpvotes(upvotes + num);
+            console.log(upvotes)
+        }
     }
     const changeUpvotes = (e) => {
-        if (e.target.value === "") {
+        if (e.target.value === "" || e.target.value < 0) {
             setUpvotes(0);
             return;
         }
@@ -36,23 +40,27 @@ function UpvoteCreatedPost({ dismiss, back, text }) {
     return (
         <Container>
             <form action="">
-                <Header>
-                    <img src="/icons/chevron-left.svg" alt="" onClick={back} className='cancle-button' />
-                    <h3>Upvote your post</h3>
-                    <img src="/icons/x.svg" alt="" onClick={() => { back(); dismiss() }} className='cancle-button' />
-
-                </Header>
+                <VotableHeader first_name={props.first_name} last_name={props.last_name} username={props.username} created={props.created} updated={props.updated} dismiss={props.dismiss} />
+                <VotableSmallBody content={props.content} navigate={props.navigate} />
                 <Upvote>
+                    <CurrentUpvotes>
+                        <div className='current'>
+                            <IconButton icon="bi-arrow-up-square" />
+                            <span>3291</span>
+                        </div>
+                        <div className='current'>
+                            <IconButton icon="bi-arrow-return-right" />
+                            {3291 - upvotes}
+                        </div>
+                    </CurrentUpvotes>
                     <UpvoteCount onChange={changeUpvotes} inputMode='numeric' value={upvotes}>
                     </UpvoteCount>
                     <UpvoteActions>
-                        <div className='increase'>
-                            <img src="/icons/chevron-double-up.svg" alt="" onClick={() => increment(10)} />
-                            <img src="/icons/chevron-up.svg" alt="" onClick={() => increment(1)} />
+                        <div onClick={() => increment(upvotes > 9 ? 10 : 1)}>
+                            <i className='bi-plus-lg' />
                         </div>
-                        <div className='decrease'>
-                            <img src="/icons/chevron-down.svg" alt="" onClick={() => increment(-1)} />
-                            <img src="/icons/chevron-double-down.svg" alt="" onClick={() => increment(-10)} />
+                        <div onClick={() => increment(upvotes > 19 ? -10 : -1)}>
+                            <i className='bi-dash-lg' />
                         </div>
                     </UpvoteActions>
                 </Upvote>
@@ -62,18 +70,11 @@ function UpvoteCreatedPost({ dismiss, back, text }) {
                     </PostButton>
                 </div>
             </form>
-        </Container>
+        </Container >
     )
 }
 const Container = styled.div`
-    width: 33%;
-    height: 400px;
-    min-width: 600px;
-    background: var(--main-background);
-    border-radius: 20px;
-    position: relative;
-    left: -90px;
-    padding: 20px;
+    
     .actions{
         position: absolute;
         right: 0px;
@@ -111,7 +112,8 @@ const PostButton = styled.button`
 const Upvote = styled.div`
     display: flex;
     justify-content: center;
-    
+    align-items: center;
+    margin-top: 30px;
     
 `
 const UpvoteCount = styled.input`
@@ -119,8 +121,8 @@ const UpvoteCount = styled.input`
     border:none;
     color: white;
     font-family: var(--upvote-font);
-    font-size: 100px;
-    font-weight: lighter;
+    font-size: 50px;
+    
     max-width: 400px;
     text-align: center;
     outline: none;
@@ -131,7 +133,21 @@ const UpvoteActions = styled.div`
         flex-direction: column;
         align-items: center;
         justify-content: center;
-
+        font-size: 40px;
+        cursor:pointer ;
     }
 `
-export default UpvoteCreatedPost
+const CurrentUpvotes = styled.div`
+    
+    .current{
+        margin: 10px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        i{
+            margin-right: 8px;
+        }
+    }
+`
+
+export default UpvotePost

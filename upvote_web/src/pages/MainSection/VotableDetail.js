@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -9,12 +9,18 @@ import en from 'javascript-time-ago/locale/en.json'
 import IconButton from '../../components/stateful_components/IconButton'
 import IconLabelButton from '../../components/stateful_components/IconLabelButton'
 import Comments from './VotableDetail/Comments'
+import VotableHeader from '../../components/stateful_components/VotableHeader'
+import { InputField } from '../../components/stateful_components/InputField'
+import UpvoteCreatedPost from '../../components/stateful_components/UpvotePost'
+import CommentPost from '../../components/stateful_components/CommentPost'
 TimeAgo.addDefaultLocale(en)
 
 function VotableDetail() {
     const { tokens } = useContext(AuthContext)
     const { id } = useParams()
     const timeAgo = new TimeAgo()
+    const [upvote, setUpvote] = useState()
+    const [comment, setComment] = useState()
 
     const loadVotable = async () => {
         const response = await api.get("votables/" + id)
@@ -31,36 +37,23 @@ function VotableDetail() {
     console.log(data)
     return (
         <Container>
-            <Header>
-                <Link className='username' to={"/" + data.user}><ProfilePicture src="/images/obama.jpg" /></Link>
+            <VotableHeader first_name={data.first_name} last_name={data.last_name} username={data.user} created={data.created} updated={data.updated} />
 
-                <div className='user-info'>
-                    <div className='upper-header'>
-                        <Link to={"/" + data.user}><span className='full-name'>{data.first_name} {data.last_name} </span>
-
-                            <span className='username'> ⤴ {timeAgo.format(Date.now() - 398423)}</span>
-                            {data.updated != data.created ? <span className='username'> (edited ⤴ {timeAgo.format(Date.now() - 32342)})</span> : <span></span>}</Link>
-                        <IconButton icon='bi-three-dots' />
-                    </div>
-                    <div className='lower-header'>
-                        <Link className='username' to={"/" + data.user}>@{data.user}</Link>
-                    </div>
-                </div>
-
-            </Header>
             <Body>
                 {data.content}
                 <Image src="/images/grand.jpg" />
 
             </Body>
             <Actions>
-                <IconLabelButton value={data.upvotes.paid__sum ? data.upvotes.paid__sum : 0} icon="bi-arrow-up-square" hover="white" />
-                <IconLabelButton value={data.comments} icon="bi-chat" hover='var(--comment-color)' />
+                <IconLabelButton value={data.upvotes.paid__sum ? data.upvotes.paid__sum : 0} icon="bi-arrow-up-square" hover="white" onClick={() => setUpvote(true)} />
+                <IconLabelButton value={data.comments} icon="bi-chat" hover='var(--comment-color)' onClick={() => setComment(true)} />
                 <IconLabelButton value={data.shares} icon="bi-link" hover='var(--share-color)' />
                 <IconLabelButton value={data.stories} icon="bi-arrow-return-right" hover='var(--repost-color)' />
             </Actions>
 
             <Comments id={id} />
+            <InputField page={<UpvoteCreatedPost id={data.id} content={data.content} username={data.user} first_name={data.first_name} last_name={data.last_name} created={data.created} updated={data.updated} image={data.image} dismiss={() => setUpvote(false)} />} open={upvote} />
+            <InputField page={<CommentPost id={data.id} content={data.content} username={data.user} first_name={data.first_name} last_name={data.last_name} created={data.created} updated={data.updated} image={data.image} dismiss={() => setComment(false)} />} open={comment} />
         </Container>
     )
 }

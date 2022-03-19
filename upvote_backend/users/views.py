@@ -13,7 +13,7 @@ from votables.serializers import VotableSerializer
 from users import serializers
 
 
-class UserList(generics.ListAPIView):
+class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -22,6 +22,16 @@ class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'username'
+
+
+class UserInfo(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'pk'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(username=self.request.user)
 
 
 class UserPosts(generics.ListAPIView):

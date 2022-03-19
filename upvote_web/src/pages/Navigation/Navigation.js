@@ -3,6 +3,7 @@ import { Backdrop } from '@mui/material';
 import React, { useState } from 'react'
 
 import styled from 'styled-components'
+import { InputField } from '../../components/stateful_components/InputField';
 import CreatePost from './components/CreatePost';
 import NavigationElement from './components/NavigationElement'
 function Navigation() {
@@ -33,9 +34,11 @@ function Navigation() {
                     <NavigationElement title="Profile" icon="/icons/person.svg" page={`user/1`} />
                 </NavigationSection>
                 <PostButton onClick={handleTogglePost}>POST</PostButton>
-                <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={postOpen}>
+                {/* <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={postOpen}>
                     <CreatePost dismiss={handleTogglePost} />
-                </Backdrop>
+                </Backdrop> */}
+                <InputField open={postOpen} page={<CreatePost dismiss={handleTogglePost}
+                />} />
             </div>
         </Container>
     )

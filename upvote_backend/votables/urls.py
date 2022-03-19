@@ -5,6 +5,7 @@ from . import views
 # /api/votables
 urlpatterns = [
     path('', views.VotableList.as_view()),
+    path('followed/', views.VotableListFollowed.as_view()),
     path('<int:pk>', views.VotableDetail.as_view()),
     path('<int:pk>/upvote/', views.UpvoteForVotable.as_view()),
     path('<int:pk>/comments/', views.CommentForUpvote.as_view()),

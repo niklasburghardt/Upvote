@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import MainSection from './pages/MainSection';
 import VotableDetail from './pages/MainSection/VotableDetail';
 import UserDetail from './pages/MainSection/UserDetail';
+import InfoSection from './pages/InfoSection';
 
 const queryClient = new QueryClient()
 
@@ -25,14 +26,16 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <AppBody>
 
-            <Header />
+
             <Navigation />
             <Routes>
               <Route element={<MainSection page={<Home />} title="Home" />} path="/" exact />
+              <Route element={<MainSection page={<Home followPage={true} />} title="Followed" />} path="/followed" exact />
               <Route path='/votable/:id' element={<MainSection page={<VotableDetail />} title="Votable" />} />
               <Route element={<Login />} path="login/" exact />
               <Route element={<MainSection page={<UserDetail />} />} path="/:username" exact />
             </Routes>
+            <InfoSection />
           </AppBody>
         </QueryClientProvider>
       </AuthProvider>

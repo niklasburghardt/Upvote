@@ -6,6 +6,7 @@ import { postVotable, upvoteVotable } from '../../../axios/AxiosInstance';
 import { InputField } from '../../../components/stateful_components/InputField';
 import AuthContext from '../../../context/AuthContext';
 import UpvoteCreatedPost from '../../../components/stateful_components/UpvotePost';
+import IconButton from '../../../components/stateful_components/IconButton';
 
 function CreatePost({ dismiss }) {
 
@@ -44,9 +45,14 @@ function CreatePost({ dismiss }) {
 
                 <Actions>
                     <div className='text-actions'>
-                        <input type="file" name='postImage' onChange={handleFileChange} />
-                        <Action src="/icons/hash.svg" />
-                        <Action src="/icons/at.svg" />
+                        <input id="image-input" type="file" name='postImage' onChange={handleFileChange} />
+                        <label htmlFor='image-input'>
+                            <IconButton icon="bi-image" className="action" />
+
+                        </label>
+                        <IconButton icon="bi-hash" className="action" />
+                        <IconButton icon="bi-at" className="action" />
+
 
                     </div>
                     <div className="end">
@@ -102,6 +108,7 @@ const Container = styled.div`
     .progress{
         color: white;
     }
+    
 `
 const UserPicture = styled.img`
     width: 60px;
@@ -149,6 +156,7 @@ const Actions = styled.div`
     .end{
         display: flex;
     }
+    
 `
 const Action = styled.img`
     cursor: pointer;

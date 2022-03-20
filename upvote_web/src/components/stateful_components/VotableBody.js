@@ -16,8 +16,12 @@ const Body = styled.div`
 `
 const Image = styled.img`
     display: block;
-    width: 100%;
+    object-fit: contain;
+    
     border-radius: 10px;
     margin-top: 8px;
+    max-height: 500px;
+    max-width: 600px;
+    
 `
 export default VotableBody

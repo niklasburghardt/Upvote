@@ -4,11 +4,13 @@ import styled from 'styled-components'
 import IconButton from '../components/stateful_components/IconButton'
 import IconLabelButton from '../components/stateful_components/IconLabelButton'
 import MyUser from '../components/stateful_components/MyUser'
+import MainButton from '../components/stateless_components/MainButton'
 import AuthContext from '../context/AuthContext'
 function InfoSection() {
     const { userInfo } = useContext(AuthContext)
     return (
         <Container>
+
             <UserHeader>
                 <div className='items'>
                     <div className='current-upvotes item'>
@@ -24,7 +26,7 @@ function InfoSection() {
                     </div>
                 </div>
                 <Profile>
-                    {userInfo ? <MyUser username="niklas" first_name="Niklas" last_name="Burghardt" /> : <Link to={"/login"}>Login</Link>}
+                    {userInfo ? <MyUser username="niklas" first_name="Niklas" last_name="Burghardt" /> : <Link to={"/login"}><MainButton label={"Login"} /></Link>}
 
                 </Profile>
             </UserHeader>

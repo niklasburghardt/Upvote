@@ -6,7 +6,7 @@ import IconButton from './IconButton'
 
 
 function MyUser(props) {
-    const { userInfo } = useContext(AuthContext)
+    const { userInfo, logoutUser } = useContext(AuthContext)
     console.log("myuser", userInfo)
     return (
         <Header>
@@ -24,7 +24,7 @@ function MyUser(props) {
                     <Link className='username' to={"/" + userInfo.username}>@{userInfo.username}</Link>
                 </div>
             </div>
-            <IconButton icon="bi-three-dot" />
+            <IconButton icon="bi-three-dots" onClick={logoutUser} />
 
         </Header>
     )
@@ -32,6 +32,8 @@ function MyUser(props) {
 const Header = styled.div`
     display: flex;
     align-items: center;
+    min-width: 250px;
+    
     .user-info{
         margin-left: 4px;
         width: 100%;

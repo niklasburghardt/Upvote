@@ -113,7 +113,7 @@ function HomePageVotable(props) {
                 <button onClick={commentUpvote.mutate} className='hover:bg-blue-100 hover:rounded transition-all bg-white p-2 focus:bg-blue-300'>Comment</button>
             </div> */}
             <InputField page={<UpvotePost id={props.id} content={props.content} username={props.username} first_name={props.first_name} last_name={props.last_name} created={props.created} updated={props.updated} image={props.image} dismiss={() => setUpvote(false)} />} open={upvote} />
-            <InputField page={<CommentPost id={props.id} content={props.content} username={props.user} first_name={props.first_name} last_name={props.last_name} created={props.created} updated={props.updated} image={props.image} dismiss={() => setComment(false)} />} open={commentOpen} />
+            <InputField page={<CommentPost id={props.id} content={props.content} username={props.username} first_name={props.first_name} last_name={props.last_name} created={props.created} updated={props.updated} image={props.image} dismiss={() => setComment(false)} />} open={commentOpen} />
 
         </Container >
 
@@ -122,7 +122,7 @@ function HomePageVotable(props) {
 
 const Container = styled.div`
     padding: 16px;
-    margin-bottom: 12px;
+    margin-bottom: 20px;
     border-radius: 10px;
     background-color: var(--second-background);
     min-width: 600px;

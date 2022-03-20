@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import AuthContext from '../context/AuthContext'
+import styled from 'styled-components'
 
 function Login() {
     const [username, setUsername] = useState()
@@ -29,14 +30,16 @@ function Login() {
 
     }
     return (
-        <div className='flex-wrap' >
+        <Container className='flex-wrap' >
             <form onSubmit={loginUser}>
                 <input type="text" name='username' onChange={(e) => setUsername(e.target.value)} className="border rounded shadow-sm focus:bg-blue-50" />
                 <input type="password" name='password' onChange={(e) => setPassword(e.target.value)} className="border rounded shadow-sm focus:bg-blue-50" />
                 <button type="submit">Login</button>
             </form>
-        </div >
+        </Container >
     )
 }
-
+const Container = styled.div`
+    flex: 0.4;
+`
 export default Login

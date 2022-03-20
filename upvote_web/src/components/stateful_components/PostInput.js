@@ -4,7 +4,7 @@ function PostInput({ text, setText }) {
 
     return (
         <Container>
-            <hr />
+
             <form action="">
                 <div className='post-head'>
                     <UserPicture src="/images/obama.jpg" />

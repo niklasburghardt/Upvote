@@ -18,12 +18,11 @@ function Comment(props) {
     const toggleLiked = async () => {
 
         const result = await likeComment(props.id, tokens.access).then(props.refetch())
-        if (result.ok) {
-            return await props.refetch()
-        }
+        props.refetch()
 
 
     }
+
 
     return (
         <Container>

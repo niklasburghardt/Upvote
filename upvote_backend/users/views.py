@@ -1,13 +1,16 @@
+
+
 from rest_framework import viewsets, status, mixins, generics
 from rest_framework import permissions, authentication
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
+from users.models import Follow
 
 
 from votables.models import Like, Votable, Comment, Upvote
-from .serializers import UserSerializer
+from .serializers import FollowSerializer, UserSerializer
 from votables.serializers import VotableSerializer
 
 from users import serializers
@@ -35,7 +38,7 @@ class UserInfo(generics.ListAPIView):
 
 
 class UserPosts(generics.ListAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+
     queryset = Votable.objects.all()
     serializer_class = VotableSerializer
     lookup_field = 'username'
@@ -44,3 +47,20 @@ class UserPosts(generics.ListAPIView):
         qs = super().get_queryset()
         username = self.kwargs['username']
         return qs.filter(user__username=username)
+
+
+class FollowUnfollow(generics.CreateAPIView):
+    queryset = Follow.objects.all()
+    serializer_class = FollowSerializer
+
+    def perform_create(self, serializer):
+        try:
+            followed = Follow.objects.get(
+                follower=self.request.user, followed=self.request.data["followed"])
+            followed.delete()
+        except:
+            follower = User.objects.get(username=self.request.user)
+            followed = User.objects.get(id=self.request.data["followed"])
+            if follower == followed:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            serializer.save(follower=self.request.user)

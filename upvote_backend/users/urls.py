@@ -7,5 +7,6 @@ urlpatterns = [
     path('self/', views.UserInfo.as_view()),
     path('<str:username>/details', views.UserDetail.as_view()),
     path('<str:username>/votables', views.UserPosts.as_view()),
+    path('<str:username>/follow', views.FollowUnfollow.as_view()),
 
 ]

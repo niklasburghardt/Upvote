@@ -14,6 +14,7 @@ import MainSection from './pages/MainSection';
 import VotableDetail from './pages/MainSection/VotableDetail';
 import UserDetail from './pages/MainSection/UserDetail';
 import InfoSection from './pages/InfoSection';
+import Followed from './pages/MainSection/Followed';
 
 const queryClient = new QueryClient()
 
@@ -29,8 +30,10 @@ function App() {
 
             <Navigation />
             <Routes>
+
               <Route element={<MainSection page={<Home />} title="Home" />} path="/" exact />
-              <Route element={<MainSection page={<Home followPage={true} />} title="Followed" />} path="/followed" exact />
+
+              <Route element={<MainSection page={<Followed />} title="Followed" />} path="/followed" exact />
               <Route path='/votable/:id' element={<MainSection page={<VotableDetail />} title="Votable" />} />
               <Route element={<Login />} path="login/" exact />
               <Route element={<MainSection page={<UserDetail />} />} path="/:username" exact />

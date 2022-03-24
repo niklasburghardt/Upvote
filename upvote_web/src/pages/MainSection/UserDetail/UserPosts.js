@@ -1,25 +1,25 @@
 import React, { useContext, useEffect } from 'react'
 import { useState } from 'react'
-import HomePageVotable from '../../components/stateful_components/HomePageVotable'
-import AuthContext from '../../context/AuthContext'
-import api from '../../axios/AxiosInstance'
+import HomePageVotable from '../../../components/stateful_components/HomePageVotable'
+import AuthContext from '../../../context/AuthContext'
+import api from '../../../axios/AxiosInstance'
 import { QueryClient, useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query'
 import { BarLoader, BounceLoader, CircleLoader, MoonLoader, RotateLoader, SyncLoader } from 'react-spinners'
 
 import styled from 'styled-components'
-import { InputField } from '../../components/stateful_components/InputField'
-import UpvotePost from '../../components/stateful_components/UpvotePost'
+import { InputField } from '../../../components/stateful_components/InputField'
+import UpvotePost from '../../../components/stateful_components/UpvotePost'
 
-function Home() {
+function UserPosts({ username }) {
     const [myData, setData] = useState()
     const [loaded, setLoaded] = useState(false)
     const [upvote, setUpvote] = useState(false)
     const [upvoteProps, setUpvoteProps] = useState(false)
-    const [nextUrl, setNextUrl] = useState("votables/")
+    const [nextUrl, setNextUrl] = useState("users/" + username + "/votables")
     const { tokens } = useContext(AuthContext)
 
     const [page, setPage] = useState(0)
-    const load = async (pageParam = "votables/") => {
+    const load = async (pageParam = "users/" + username + "/votables") => {
         console.log(pageParam)
         const response = await api.get(pageParam
         )
@@ -29,7 +29,7 @@ function Home() {
     const queryClient = useQueryClient()
 
 
-    const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery('votables', ({ pageParam = "votables/"
+    const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery('votables', ({ pageParam = "users/" + username + "/votables"
     }) => load(pageParam),
 
         {
@@ -148,4 +148,4 @@ const Container = styled.div`
     
     
 `
-export default Home
+export default UserPosts

@@ -52,9 +52,16 @@ class CommentSerializer(serializers.ModelSerializer):
         return likes.count()
 
     def get_liked(self, obj):
-        if Like.objects.filter(comment=obj, user=obj.user).exists():
+        user = self.context.get("request").user
+        try:
+
+            user = User.objects.get(username=user)
+            print(user)
+            obj = Like.objects.get(
+                comment=obj, user=user)
             return True
-        return False
+        except:
+            return False
 
 
 class LikeSerializer(serializers.ModelSerializer):

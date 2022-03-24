@@ -71,7 +71,7 @@ function HomePageVotable(props) {
         return " time.toLocalTimeString()"
     }
     const navigate = () => {
-        return navigator("votable/" + props.id)
+        return navigator("/votable/" + props.id)
 
     }
     return (

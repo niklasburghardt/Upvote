@@ -12,7 +12,7 @@ function VotableHeader(props) {
 
     return (
         <Header>
-            <Link className='username' to={"/" + props.username}><ProfilePicture src="/images/obama.jpg" /></Link>
+            <a className='username' href={"/" + props.username}><ProfilePicture src="/images/obama.jpg" /></a>
 
             <div className='user-info'>
                 <div className='upper-header'>

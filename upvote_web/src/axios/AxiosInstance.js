@@ -76,5 +76,20 @@ const upvoteVotable = async (auth, votable, amount) => {
     const response = await fetch("http://localhost:8000/api/votables/" + votable + "/upvote/", options).then(result => console.log("rese", result.ok))
     return response
 }
+const followUser = async (auth, followed) => {
+    const options = {
+        "method": "POST",
+        headers: {
+            "Authorization": "Bearer " + auth,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "followed": followed,
+            "follower": 1
+        })
+    }
+    const response = await fetch("http://localhost:8000/api/users/" + followed + "/follow", options)
+    return response.json()
+}
 export default api
-export { likeComment, postVotable, upvoteVotable, postComment }
+export { likeComment, postVotable, upvoteVotable, postComment, followUser }

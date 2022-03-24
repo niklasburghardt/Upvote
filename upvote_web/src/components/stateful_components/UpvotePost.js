@@ -10,7 +10,8 @@ import IconButton from './IconButton';
 function UpvotePost(props) {
     const [upvotes, setUpvotes] = useState(0);
     const [loading, setLoading] = useState(false);
-    const { tokens } = useContext(AuthContext)
+    const { tokens, userInfo } = useContext(AuthContext)
+
     const post = async (e) => {
         e.preventDefault()
 
@@ -24,6 +25,9 @@ function UpvotePost(props) {
         }
     }
     const changeUpvotes = (e) => {
+        if (userInfo.upvotes - e.target.value < 0) {
+            return
+        }
         if (e.target.value === "" || e.target.value < 0) {
             setUpvotes(0);
             return;
@@ -46,11 +50,11 @@ function UpvotePost(props) {
                     <CurrentUpvotes>
                         <div className='current'>
                             <IconButton icon="bi-arrow-up-square" />
-                            <span>3291</span>
+                            <span>{userInfo && userInfo.upvotes}</span>
                         </div>
                         <div className='current'>
                             <IconButton icon="bi-arrow-return-right" />
-                            {3291 - upvotes}
+                            {userInfo && userInfo.upvotes - upvotes}
                         </div>
                     </CurrentUpvotes>
                     <UpvoteCount onChange={changeUpvotes} inputMode='numeric' value={upvotes}>

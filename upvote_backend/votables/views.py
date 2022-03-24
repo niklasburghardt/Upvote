@@ -10,6 +10,8 @@ from django.contrib.auth.models import User
 from api.mixins import FromUserQuerySetMixin, OwnerPermissionMixin
 
 from api.permissions import IsOwnerOrReadOnly
+from users.models import Follow
+
 from .models import Like, Share, Story, Votable, Comment, Upvote
 from users.serializers import UserSerializer
 from .serializers import CommentSerializer, LikeSerializer, ShareSerializer, StorySerializer, UpvoteSerializer, VotableSerializer
@@ -35,10 +37,11 @@ class VotableListFollowed(generics.ListAPIView):
     serializer_class = VotableSerializer
 
     def get_queryset(self):
+        user = User.objects.filter(id=1)
+        user_follows = Follow.objects.filter(follower__in=user)
+        followed = User.objects.filter(followers__in=user_follows)
         qs = super().get_queryset()
-        if not self.request.user:
-            return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Please Login"})
-        return qs.filter(user=self.request.user)
+        return qs.filter(user__in=followed)
 
 
 class VotableDetail(OwnerPermissionMixin, generics.RetrieveUpdateDestroyAPIView):
@@ -79,7 +82,7 @@ class LikeComment(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         comment = self.request.data["comment"]
         user = self.request.user
-        existing = Like.objects.filter(comment=comment, user=user)
+        existing = Like.objects.filter(comment=comment, user__username=user)
 
         if existing.exists():
             existing.delete()

@@ -10,11 +10,10 @@ function InfoSection() {
     const { userInfo } = useContext(AuthContext)
     return (
         <Container>
-
-            <UserHeader>
+            {userInfo ? <UserHeader>
                 <div className='items'>
                     <div className='current-upvotes item'>
-                        <IconLabelButton icon="bi-arrow-up-square" value={392} color="white" hover='var(--main-grey-color)' />
+                        <IconLabelButton icon="bi-arrow-up-square" value={userInfo.upvotes} color="white" hover='var(--main-grey-color)' />
                     </div>
                     <div className='notifications item'>
                         <IconLabelButton icon="bi-bell" value={392} color="white" hover='var(--main-grey-color)' />
@@ -26,10 +25,11 @@ function InfoSection() {
                     </div>
                 </div>
                 <Profile>
-                    {userInfo ? <MyUser username="niklas" first_name="Niklas" last_name="Burghardt" /> : <Link to={"/login"}><MainButton label={"Login"} /></Link>}
+                    <MyUser username="niklas" first_name="Niklas" last_name="Burghardt" />
 
                 </Profile>
-            </UserHeader>
+            </UserHeader> : <Link to={"/login"}><MainButton label={"Login"} /></Link>}
+
             <Widgets>
 
             </Widgets>

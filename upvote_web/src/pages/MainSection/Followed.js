@@ -10,26 +10,30 @@ import styled from 'styled-components'
 import { InputField } from '../../components/stateful_components/InputField'
 import UpvotePost from '../../components/stateful_components/UpvotePost'
 
-function Home() {
+function Followed() {
     const [myData, setData] = useState()
     const [loaded, setLoaded] = useState(false)
     const [upvote, setUpvote] = useState(false)
     const [upvoteProps, setUpvoteProps] = useState(false)
-    const [nextUrl, setNextUrl] = useState("votables/")
+    const [nextUrl, setNextUrl] = useState("votables/followed/")
     const { tokens } = useContext(AuthContext)
 
     const [page, setPage] = useState(0)
-    const load = async (pageParam = "votables/") => {
+    const load = async (pageParam = "votables/followed/") => {
         console.log(pageParam)
-        const response = await api.get(pageParam
-        )
+        const response = await api.get(pageParam, {
+            headers: {
+                "Content-Type": "applictaion/json",
+                "Authorization": "Bearer " + tokens.access
+            }
+        })
         console.log(response)
         return response.data
     }
     const queryClient = useQueryClient()
 
 
-    const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery('votables', ({ pageParam = "votables/"
+    const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery('votables', ({ pageParam = "votables/followed/"
     }) => load(pageParam),
 
         {
@@ -148,4 +152,4 @@ const Container = styled.div`
     
     
 `
-export default Home
+export default Followed

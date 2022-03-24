@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -34,6 +35,14 @@ class Upvote(models.Model):
     active = models.BooleanField()
     sold = models.IntegerField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+
+
+class BoughtUpvote(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="bought_upvotes")
+    amount = models.IntegerField()
+    created = models.DateTimeField(auto_now_add=True)
+    initial = models.BooleanField(default=True)
 
 
 class Comment(models.Model):

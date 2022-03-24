@@ -10,30 +10,39 @@ function MainSection({ title, page }) {
     }
     return (
         <Container>
-            <HeaderContainer>
+            <div className="main-divider"></div>
+            <div>
+                <HeaderContainer>
 
-                <div className='main-divider'>
+
                     <Header className='darken'>
                         <h1>{title}</h1>
                     </Header>
-                </div>
-                <IconButton icon="bi-gear" />
+
+                    <IconButton icon="bi-gear" />
 
 
 
-            </HeaderContainer>
-            <Body>
-                {page}
-            </Body>
+                </HeaderContainer>
+                <Body>
+                    {page}
+                </Body>
+            </div>
+            <div className="main-divider"></div>
+
         </Container>
     )
 }
 const Container = styled.div`
     flex: 0.4;
     padding: 0px 0px;
+    display: flex;
     .main-divider{
-        
+        width: 1px;
+        background-color: var(--main-grey-color);
         height: 100%;
+        margin: 0px 16px;
+        min-height: 100vh;
     }
     
 `

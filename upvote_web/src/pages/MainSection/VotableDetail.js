@@ -23,7 +23,11 @@ function VotableDetail() {
     const [comment, setComment] = useState()
 
     const loadVotable = async () => {
-        const response = await api.get("votables/" + id)
+        const response = await api.get("votables/" + id, tokens && {
+            headers: {
+                "Authorization": "Bearer " + tokens.access
+            }
+        })
         return response.data
     }
     const { data, status } = useQuery("votable", loadVotable)
@@ -45,7 +49,7 @@ function VotableDetail() {
 
             </Body>
             <Actions>
-                <IconLabelButton value={data.upvotes.paid__sum ? data.upvotes.paid__sum : 0} icon="bi-arrow-up-square" hover="white" onClick={() => setUpvote(true)} />
+                <IconLabelButton value={data.upvotes.paid__sum ? data.upvotes.paid__sum : 0} icon="bi-arrow-up-square" hover="white" onClick={() => !data.upvoted && setUpvote(true)} color={data.upvoted ? "white" : "var(--main-grey-color)"} />
                 <IconLabelButton value={data.comments} icon="bi-chat" hover='var(--comment-color)' onClick={() => setComment(true)} />
                 <IconLabelButton value={data.shares} icon="bi-link" hover='var(--share-color)' />
                 <IconLabelButton value={data.stories} icon="bi-arrow-return-right" hover='var(--repost-color)' />

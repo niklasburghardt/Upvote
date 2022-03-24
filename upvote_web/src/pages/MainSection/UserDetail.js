@@ -47,6 +47,7 @@ function UserDetail() {
                             <StatisticShow label="Followers" value={data.followers} />
                             <StatisticShow label="Followed" value={data.followed} />
                             <StatisticShow label="Upvotes" value={data.upvotes} />
+
                         </Stats>
                     </LeftHeader>
                 </UserHeader>

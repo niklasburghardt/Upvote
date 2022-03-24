@@ -51,6 +51,7 @@ function HomePageVotable(props) {
             console.log(result)
         })
     }
+    console.log(props.upvoted, props.id)
     const comment = async () => {
         const options = {
             'method': "POST",
@@ -101,7 +102,7 @@ function HomePageVotable(props) {
             </Body> */}
             <VotableBody content={props.content} navigate={navigate} />
             <Actions>
-                <IconLabelButton value={props.upvotes ? props.upvotes : 0} icon="bi-arrow-up-square" onClick={() => setUpvote(true)} hover="white" />
+                <IconLabelButton value={props.upvotes ? props.upvotes : 0} icon="bi-arrow-up-square" onClick={() => !props.upvoted && setUpvote(true)} hover="white" color={props.upvoted ? "white" : "var(--main-grey-color)"} />
                 <IconLabelButton value={props.comments} icon="bi-chat" hover="var(--comment-color)" onClick={() => setComment(true)} />
                 <IconLabelButton value={props.shared ? props.shared : 0} icon="bi-link" hover="var(--share-color)" />
                 <IconLabelButton value={props.stories ? props.stories : 0} icon="bi-arrow-return-right" hover="var(--repost-color)" />

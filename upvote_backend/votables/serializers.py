@@ -14,6 +14,7 @@ class VotableSerializer(serializers.ModelSerializer):
     upvotes = serializers.SerializerMethodField()
     shares = serializers.SerializerMethodField()
     stories = serializers.SerializerMethodField()
+    upvoted = serializers.SerializerMethodField()
 
     class Meta:
         model = Votable
@@ -34,6 +35,15 @@ class VotableSerializer(serializers.ModelSerializer):
     def get_stories(self, obj):
         stories = Story.objects.filter(votable=obj)
         return stories.count()
+
+    def get_upvoted(self, obj):
+        print(self.context["request"].user)
+        try:
+            upvote = Upvote.objects.get(
+                user=self.context["request"].user, votable=obj)
+            return True
+        except:
+            return False
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -82,10 +92,7 @@ class UpvoteSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_current_score(self, obj):
-        votable = Votable.objects.get(id=obj.votable.id)
-        upvotes = Upvote.objects.filter(votable=obj.votable)
-        upvote_score = votable.upvotes.aggregate(Sum("paid"))
-        return upvotes.aggregate(Sum("paid"))
+        return 10
 
 
 class ShareSerializer(serializers.ModelSerializer):

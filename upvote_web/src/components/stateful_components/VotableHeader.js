@@ -9,6 +9,16 @@ TimeAgo.addDefaultLocale(en)
 
 function VotableHeader(props) {
     const timeAgo = new TimeAgo()
+    const timeToMilliseconds = (dateString) => {
+        const myDate = new Date(dateString)
+        console.log("date", myDate)
+        const milli = Date.now() - myDate
+        if (milli) {
+            return timeAgo.format(Date.now() - milli)
+        }
+
+        return "some day"
+    }
 
     return (
         <Header>
@@ -18,8 +28,8 @@ function VotableHeader(props) {
                 <div className='upper-header'>
                     <Link to={"/" + props.username}><span className='full-name'>{props.first_name} {props.last_name} </span>
 
-                        <span className='username'> ⤴ {timeAgo.format(Date.now() - 398423)}</span>
-                        {props.updated != props.created ? <span className='username'> (edited ⤴ {timeAgo.format(Date.now() - 32342)})</span> : <span></span>}</Link>
+                        <span className='username'> ⤴ {timeToMilliseconds(props.created)}</span>
+                        {props.updated != props.created ? <span className='username'> (edited ⤴ {timeToMilliseconds(props.updated)})</span> : <span></span>}</Link>
                     <IconButton icon={props.dismiss ? 'bi-x' : 'bi-three-dots'} onClick={props.dismiss} />
                 </div>
                 <div className='lower-header'>

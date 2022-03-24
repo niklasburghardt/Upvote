@@ -16,6 +16,7 @@ from .models import Like, Share, Story, Votable, Comment, Upvote
 from users.serializers import UserSerializer
 from .serializers import CommentSerializer, LikeSerializer, ShareSerializer, StorySerializer, UpvoteSerializer, VotableSerializer
 from votables import serializers
+from django.db.models import Sum, Avg
 
 
 class VotableList(generics.ListCreateAPIView):
@@ -57,7 +58,35 @@ class UpvoteForVotable(generics.ListCreateAPIView):
         votable_id = self.request.data["votable"]
         votable = Votable.objects.get(id=votable_id)
         upvotes = votable.comments.count()
-        serializer.save(user=self.request.user, upvote_score=upvotes)
+        user = User.objects.get(username=self.request.user)
+        try:
+            exists = Upvote.objects.get(
+                user=self.request.user, votable=votable_id)
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        except:
+            pa = user.upvotes.filter(active=True)
+            pas = pa.aggregate(Sum("paid"))["paid__sum"]
+
+            ps = user.upvotes.filter(active=False)
+            pss = ps.aggregate(Sum("paid"))["paid__sum"]
+
+            s = user.upvotes.filter(active=False)
+            ss = s.aggregate(Sum("sold"))["sold__sum"]
+            b = user.bought_upvotes.all()
+
+            bs = b.aggregate(Sum("amount"))["amount__sum"]
+
+            if type(pas) != int:
+                pas = 0
+            if type(pss) != int:
+                pss = 0
+            if type(ss) != int:
+                ss = 0
+            if type(bs) != int:
+                bs = 0
+            if ss+bs-pas-pss-self.request.data["paid"] >= 0:
+                return serializer.save(user=self.request.user, upvote_score=upvotes)
+            return Response(status=status.HTTP_403_FORBIDDEN)
 
 
 class CommentForUpvote(generics.ListCreateAPIView):

@@ -1,12 +1,18 @@
 import styled from 'styled-components'
-import React from 'react'
+import React, { useContext } from 'react'
 import { useQuery } from 'react-query'
 import api from '../../../axios/AxiosInstance'
 import Comment from '../../../components/stateful_components/Comment'
+import AuthContext from '../../../context/AuthContext'
 
 function Comments(props) {
+    const { tokens } = useContext(AuthContext)
     const loadComments = async () => {
-        const result = await api.get(`votables/${props.id}/comments/`)
+        const result = await api.get(`votables/${props.id}/comments/`, tokens && {
+            headers: {
+                "Authorization": tokens.access
+            }
+        })
         console.log("results", result)
         return result.data
     }

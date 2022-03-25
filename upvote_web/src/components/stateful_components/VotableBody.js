@@ -5,13 +5,13 @@ function VotableBody({ content, image, navigate }) {
     return (
         <Body onClick={navigate}>
             {content}
-            <Image src="/images/grand.jpg" />
+            {image && <Image src="/images/grand.jpg" />}
         </Body>
     )
 }
 const Body = styled.div`
     font-size: 16px;
-    margin-top: 8px;
+    margin-top: 0px;
 
 `
 const Image = styled.img`

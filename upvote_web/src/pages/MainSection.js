@@ -37,6 +37,7 @@ const Container = styled.div`
     flex: 0.4;
     padding: 0px 0px;
     display: flex;
+    
     .main-divider{
         width: 1px;
         background-color: var(--main-grey-color);

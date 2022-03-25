@@ -12,9 +12,9 @@ from api.mixins import FromUserQuerySetMixin, OwnerPermissionMixin
 from api.permissions import IsOwnerOrReadOnly
 from users.models import Follow
 
-from .models import Like, Share, Story, Votable, Comment, Upvote
+from .models import Like, Share, Story, Votable, Comment, Upvote, CommentResponse
 from users.serializers import UserSerializer
-from .serializers import CommentSerializer, LikeSerializer, ShareSerializer, StorySerializer, UpvoteSerializer, VotableSerializer
+from .serializers import CommentSerializer, LikeSerializer, ResponseSerializer, ShareSerializer, StorySerializer, UpvoteSerializer, VotableSerializer
 from votables import serializers
 from django.db.models import Sum, Avg
 
@@ -92,7 +92,6 @@ class UpvoteForVotable(generics.ListCreateAPIView):
 class CommentForUpvote(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [permissions.AllowAny]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -101,6 +100,19 @@ class CommentForUpvote(generics.ListCreateAPIView):
         qs = super().get_queryset()
         pk = self.kwargs["pk"]
         return qs.filter(votable__id=pk)
+
+
+class RespondToComment(generics.ListCreateAPIView):
+    queryset = CommentResponse.objects.all()
+    serializer_class = ResponseSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        comment = self.kwargs["pk"]
+        qs = super().get_queryset()
+        return qs.filter(comment__id=comment)
 
 
 class LikeComment(generics.ListCreateAPIView):

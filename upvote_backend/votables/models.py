@@ -54,6 +54,19 @@ class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["-created"]
+
+
+class CommentResponse(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="responses")
+    content = models.CharField(max_length=255)
+    comment = models.ForeignKey(
+        Comment, on_delete=models.CASCADE, related_name="responses")
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
 
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

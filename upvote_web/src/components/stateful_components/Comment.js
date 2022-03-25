@@ -6,7 +6,10 @@ import en from 'javascript-time-ago/locale/en.json'
 import IconButton from './IconButton'
 import IconLabelButton from './IconLabelButton'
 import AuthContext from '../../context/AuthContext'
-import { likeComment } from '../../axios/AxiosInstance'
+import api, { likeComment } from '../../axios/AxiosInstance'
+import { useInfiniteQuery } from 'react-query'
+import CommentResponse from './CommentResponse'
+import ResponseInput from './ResponseInput'
 
 TimeAgo.addDefaultLocale(en)
 
@@ -14,6 +17,23 @@ function Comment(props) {
     const timeAgo = new TimeAgo()
 
     const { tokens } = useContext(AuthContext)
+    const [showComments, setComments] = useState(false)
+
+    const loadResponses = async (pageParam = `votables/comments/${props.id}/response`) => {
+        const result = await api.get(pageParam, tokens && {
+            headers: {
+                "Authorization": "Bearer " + tokens.access
+            }
+        })
+        console.log("response", result)
+        return result.data
+    }
+
+    const { data, status, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery("responses" + props.id, ({ pageParam = `votables/comments/${props.id}/response`
+    }) => loadResponses(pageParam), {
+        getNextPageParam: (lastPage, allPages) => lastPage.next,
+
+    })
 
     const toggleLiked = async () => {
 
@@ -22,6 +42,7 @@ function Comment(props) {
 
 
     }
+    console.log("responses", props.responses)
 
 
     return (
@@ -49,11 +70,20 @@ function Comment(props) {
                 {props.content}
                 <Actions>
                     <IconLabelButton value={props.likes} icon={props.liked ? "bi-heart-fill" : "bi-heart"} hover="var(--like-color)" color={props.liked ? "var(--like-color)" : ""} onClick={toggleLiked} />
-                    <IconLabelButton value={2313} icon="bi-chat" hover="var(--comment-color)" />
+                    <IconLabelButton value={props.responses ? props.responses : 0} icon="bi-chat" hover="var(--comment-color)" onClick={() => setComments(!showComments)} />
 
 
                 </Actions>
             </Body>
+            <Responses>
+                {showComments && <ResponseInput commentId={props.id} refetch={refetch} />}
+                {data && showComments && data.pages.map((group, i) => (
+                    <React.Fragment key={i}>
+                        {group.results.map(response => (<CommentResponse content={response.content} user={response.user} first_name={response.first_name} last_name={response.last_name} created={response.created} updated={response.updated} likes={response.likes} liked={response.liked} responses={response.responses} id={response.id}></CommentResponse>))}
+                    </React.Fragment>
+                ))}
+                {showComments && <IconLabelButton onClick={fetchNextPage} icon="bi-arrow-down" value={"Load more responses"} />}
+            </Responses>
 
         </Container>
     )
@@ -104,6 +134,10 @@ const Body = styled.div`
     font-size: 16px;
     
     margin-bottom: 8px;;
+
+`
+const Responses = styled.div`
+    margin-left: 20px;
 
 `
 const Actions = styled.div`

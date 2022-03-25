@@ -29,7 +29,7 @@ function UserPosts({ username }) {
     const queryClient = useQueryClient()
 
 
-    const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery('votables', ({ pageParam = "users/" + username + "/votables"
+    const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery('votables-user', ({ pageParam = "users/" + username + "/votables"
     }) => load(pageParam),
 
         {

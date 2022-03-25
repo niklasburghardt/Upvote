@@ -9,6 +9,7 @@ urlpatterns = [
     path('<int:pk>', views.VotableDetail.as_view()),
     path('<int:pk>/upvote/', views.UpvoteForVotable.as_view()),
     path('<int:pk>/comments/', views.CommentForUpvote.as_view()),
+    path('comments/<int:pk>/response', views.RespondToComment.as_view()),
     path('<int:pk>/share/', views.ShareVotable.as_view()),
     path('<int:pk>/story/', views.StoryViewset.as_view()),
     path('comments/<int:pk>/likes', views.LikeComment.as_view()),

@@ -2,7 +2,7 @@ from numpy import source
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 from django.contrib.auth.models import User
-from .models import Like, Share, Story, Votable, Comment, Upvote
+from .models import Like, CommentResponse, Share, Story, Votable, Comment, Upvote
 from django.db.models import Sum, Avg
 
 
@@ -51,6 +51,7 @@ class CommentSerializer(serializers.ModelSerializer):
     first_name = serializers.ReadOnlyField(source='user.first_name')
     last_name = serializers.ReadOnlyField(source='user.last_name')
     likes = serializers.SerializerMethodField()
+    responses = serializers.ReadOnlyField(source="responses.count")
     liked = serializers.SerializerMethodField()
 
     class Meta:
@@ -72,6 +73,16 @@ class CommentSerializer(serializers.ModelSerializer):
             return True
         except:
             return False
+
+
+class ResponseSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')
+    first_name = serializers.ReadOnlyField(source='user.first_name')
+    last_name = serializers.ReadOnlyField(source='user.last_name')
+
+    class Meta:
+        model = CommentResponse
+        fields = '__all__'
 
 
 class LikeSerializer(serializers.ModelSerializer):

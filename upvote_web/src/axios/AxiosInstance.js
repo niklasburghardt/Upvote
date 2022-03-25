@@ -27,6 +27,24 @@ const likeComment = async (comment, auth) => {
     console.log("mynice", response)
     return response
 }
+const respondComment = async (auth, comment, content) => {
+    const options = {
+
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + auth,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "comment": comment,
+            "content": content
+        })
+
+    }
+    const response = await fetch("http://localhost:8000/api/votables/comments/32/response", options)
+
+    return response
+}
 const postVotable = async (auth, content, image, upvotes) => {
     const options = {
         method: "POST",
@@ -92,4 +110,4 @@ const followUser = async (auth, followed) => {
     return response.json()
 }
 export default api
-export { likeComment, postVotable, upvoteVotable, postComment, followUser }
+export { likeComment, postVotable, upvoteVotable, postComment, followUser, respondComment }

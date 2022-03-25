@@ -23,7 +23,7 @@ function UserDetail() {
         })
         return response.data
     }
-    const { data, status, refetch } = useQuery("userinfo", getUser)
+    const { data, status, refetch } = useQuery("userinfo" + username, getUser)
     if (status === "loading") {
         return <div>
             Loading...

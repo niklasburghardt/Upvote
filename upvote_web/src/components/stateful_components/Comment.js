@@ -18,6 +18,7 @@ function Comment(props) {
 
     const { tokens } = useContext(AuthContext)
     const [showComments, setComments] = useState(false)
+    const [commentsOpen, setCommentOpen] = useState(10)
 
     const loadResponses = async (pageParam = `votables/comments/${props.id}/response`) => {
         const result = await api.get(pageParam, tokens && {
@@ -29,11 +30,19 @@ function Comment(props) {
         return result.data
     }
 
+
     const { data, status, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery("responses" + props.id, ({ pageParam = `votables/comments/${props.id}/response`
     }) => loadResponses(pageParam), {
         getNextPageParam: (lastPage, allPages) => lastPage.next,
 
     })
+    const getLeftComment = () => {
+        if (data.pages[0].count <= 10) {
+            return "No"
+        }
+        let amount = data.pages[0].count - commentsOpen
+        return amount < 0 ? "No" : amount
+    }
 
     const toggleLiked = async () => {
 
@@ -82,7 +91,10 @@ function Comment(props) {
                         {group.results.map(response => (<CommentResponse content={response.content} user={response.user} first_name={response.first_name} last_name={response.last_name} created={response.created} updated={response.updated} likes={response.likes} liked={response.liked} responses={response.responses} id={response.id}></CommentResponse>))}
                     </React.Fragment>
                 ))}
-                {showComments && <IconLabelButton onClick={fetchNextPage} icon="bi-arrow-down" value={"Load more responses"} />}
+                {showComments && <IconLabelButton onClick={() => {
+                    fetchNextPage()
+                    setCommentOpen(commentsOpen + 10)
+                }} icon="bi-arrow-down" value={getLeftComment() + " more responses"} />}
             </Responses>
 
         </Container>

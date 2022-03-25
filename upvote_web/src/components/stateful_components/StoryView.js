@@ -1,20 +1,20 @@
 import styled from 'styled-components'
-import { Backdrop } from '@mui/material'
 import React from 'react'
+import { Backdrop } from '@mui/material'
 
-export const InputField = ({ open, page }) => {
+function StoryView(props) {
     return (
-        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={open}>
+        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={props.open}>
             <Container>
-                {page}
+                Nice
             </Container>
         </Backdrop>
     )
 }
 const Container = styled.div`
     width: 33%;
-    min-width: 600px;
-    height: 400px;
+    min-width: 400px;
+    height: 700px;
     background: var(--main-background);
     border-radius: 20px;
     position: relative;
@@ -37,3 +37,4 @@ const Container = styled.div`
         color: white;
     }
 `
+export default StoryView

@@ -1,17 +1,23 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import IconButton from './IconButton'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
+import StoryView from './StoryView'
+import { InputField } from './InputField'
+import PopUpContext from '../../context/PopUpContext'
 
 TimeAgo.addDefaultLocale(en)
 
 function VotableHeader(props) {
     const timeAgo = new TimeAgo()
+
+    const { upvote, setStory } = useContext(PopUpContext)
+
     const timeToMilliseconds = (dateString) => {
         const myDate = new Date(dateString)
-        console.log("date", myDate)
+
         const milli = Date.now() - myDate
         if (milli) {
             return timeAgo.format(Date.now() - milli)
@@ -21,23 +27,27 @@ function VotableHeader(props) {
     }
 
     return (
-        <Header>
-            <a className='username' href={"/" + props.username}><ProfilePicture src="/images/obama.jpg" /></a>
+        <>
+            <Header>
+                <ProfilePicture src="/images/obama.jpg" onClick={() => setStory(props)} />
 
-            <div className='user-info'>
-                <div className='upper-header'>
-                    <Link to={"/" + props.username}><span className='full-name'>{props.first_name} {props.last_name} </span>
+                <div className='user-info'>
+                    <div className='upper-header'>
+                        <Link to={"/" + props.user}><span className='full-name'>{props.first_name} {props.last_name} </span>
 
-                        <span className='username'> ⤴ {timeToMilliseconds(props.created)}</span>
-                        {props.updated != props.created ? <span className='username'> (edited ⤴ {timeToMilliseconds(props.updated)})</span> : <span></span>}</Link>
-                    <IconButton icon={props.dismiss ? 'bi-x' : 'bi-three-dots'} onClick={props.dismiss} />
+                            <span className='username'> ⤴ {timeToMilliseconds(props.created)}</span>
+                            {props.updated != props.created ? <span className='username'> (edited ⤴ {timeToMilliseconds(props.updated)})</span> : <span></span>}</Link>
+                        <IconButton icon={props.dismiss ? 'bi-x' : 'bi-three-dots'} onClick={props.dismiss} />
+                    </div>
+                    <div className='lower-header'>
+                        <Link className='username' to={"/" + props.user}>@{props.user}</Link>
+                    </div>
                 </div>
-                <div className='lower-header'>
-                    <Link className='username' to={"/" + props.username}>@{props.username}</Link>
-                </div>
-            </div>
 
-        </Header>
+            </Header>
+
+
+        </>
     )
 }
 const Header = styled.div`

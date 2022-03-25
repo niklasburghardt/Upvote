@@ -15,6 +15,11 @@ import VotableDetail from './pages/MainSection/VotableDetail';
 import UserDetail from './pages/MainSection/UserDetail';
 import InfoSection from './pages/InfoSection';
 import Followed from './pages/MainSection/Followed';
+import { InputField } from './components/stateful_components/InputField';
+import StoryView from './components/stateful_components/StoryView';
+import { PopUpProvider } from './context/PopUpContext';
+import Backdrops from './pages/Backdrops';
+
 
 const queryClient = new QueryClient()
 
@@ -25,21 +30,25 @@ function App() {
     <Router>
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
-          <AppBody>
+          <PopUpProvider>
+            <AppBody>
 
 
-            <Navigation />
-            <Routes>
+              <Navigation />
+              <Routes>
 
-              <Route element={<MainSection page={<Home />} title="Home" />} path="/" exact />
+                <Route element={<MainSection page={<Home />} title="Home" />} path="/" exact />
 
-              <Route element={<MainSection page={<Followed />} title="Followed" />} path="/followed" exact />
-              <Route path='/votable/:id' element={<MainSection page={<VotableDetail />} title="Votable" />} />
-              <Route element={<Login />} path="login/" exact />
-              <Route element={<MainSection page={<UserDetail />} />} path="/:username" exact />
-            </Routes>
-            <InfoSection />
-          </AppBody>
+                <Route element={<MainSection page={<Followed />} title="Followed" />} path="/followed" exact />
+                <Route path='/votable/:id' element={<MainSection page={<VotableDetail />} title="Votable" />} />
+                <Route element={<Login />} path="login/" exact />
+                <Route element={<MainSection page={<UserDetail />} />} path="/:username" exact />
+              </Routes>
+              <InfoSection />
+              <InputField page={<StoryView />} />
+              <Backdrops />
+            </AppBody>
+          </PopUpProvider>
         </QueryClientProvider>
       </AuthProvider>
     </Router>

@@ -13,6 +13,7 @@ import VotableBody from './VotableBody'
 import UpvotePost from './UpvotePost'
 import CommentPost from './CommentPost'
 import { InputField } from './InputField'
+import PopUpContext from '../../context/PopUpContext'
 TimeAgo.addDefaultLocale(en)
 
 function HomePageVotable(props) {
@@ -21,9 +22,11 @@ function HomePageVotable(props) {
     const [comments, setComments] = useState(null)
     const [inputComment, setInputComment] = useState(null)
     const [noComments, setNoComments] = useState(null)
-    const [upvote, setUpvote] = useState(false)
-    const [commentOpen, setComment] = useState(false)
+
+
     const timeAgo = new TimeAgo()
+
+    const { upvote, setUpvote, setComment } = useContext(PopUpContext)
 
     const commentUpvote = useMutation(() => {
         const options = {
@@ -79,31 +82,31 @@ function HomePageVotable(props) {
 
         <Container >
             {/* <Header>
-                <Link className='username' to={"" + props.username}><ProfilePicture src="/images/obama.jpg" /></Link>
+                <Link className='username' to={"" + props.user}><ProfilePicture src="/images/obama.jpg" /></Link>
 
                 <div className='user-info'>
                     <div className='upper-header'>
-                        <Link to={"" + props.username}><span className='full-name'>{props.first_name} {props.last_name} </span>
+                        <Link to={"" + props.user}><span className='full-name'>{props.first_name} {props.last_name} </span>
 
                             <span className='username'> ⤴ {timeAgo.format(Date.now() - 398423)}</span>
                             {props.updated != props.created ? <span className='username'> (edited ⤴ {timeAgo.format(Date.now() - 32342)})</span> : <span></span>}</Link>
                         <IconButton icon='bi-three-dots' />
                     </div>
                     <div className='lower-header'>
-                        <Link className='username' to={"" + props.username}>@{props.username}</Link>
+                        <Link className='username' to={"" + props.user}>@{props.user}</Link>
                     </div>
                 </div>
 
             </Header> */}
-            <VotableHeader first_name={props.first_name} last_name={props.last_name} username={props.username} created={props.created} updated={props.updated} />
+            <VotableHeader first_name={props.first_name} last_name={props.last_name} user={props.user} created={props.created} updated={props.updated} />
             {/* <Body onClick={navigate}>
                 {props.content}
                 <Image src="/images/grand.jpg" />
             </Body> */}
             <VotableBody content={props.content} navigate={navigate} />
             <Actions>
-                <IconLabelButton value={props.upvotes ? props.upvotes : 0} icon="bi-arrow-up-square" onClick={() => !props.upvoted && setUpvote(true)} hover="white" color={props.upvoted ? "white" : "var(--main-grey-color)"} />
-                <IconLabelButton value={props.comments} icon="bi-chat" hover="var(--comment-color)" onClick={() => setComment(true)} />
+                <IconLabelButton value={props.upvotes ? props.upvotes : 0} icon="bi-arrow-up-square" onClick={() => !props.upvoted && setUpvote(props)} hover="white" color={props.upvoted ? "white" : "var(--main-grey-color)"} />
+                <IconLabelButton value={props.comments} icon="bi-chat" hover="var(--comment-color)" onClick={() => setComment(props)} />
                 <IconLabelButton value={props.shared ? props.shared : 0} icon="bi-link" hover="var(--share-color)" />
                 <IconLabelButton value={props.stories ? props.stories : 0} icon="bi-arrow-return-right" hover="var(--repost-color)" />
             </Actions>
@@ -113,8 +116,8 @@ function HomePageVotable(props) {
                 <input type="text" onChange={(e) => setInputComment(e.target.value)} />
                 <button onClick={commentUpvote.mutate} className='hover:bg-blue-100 hover:rounded transition-all bg-white p-2 focus:bg-blue-300'>Comment</button>
             </div> */}
-            <InputField page={<UpvotePost id={props.id} content={props.content} username={props.username} first_name={props.first_name} last_name={props.last_name} created={props.created} updated={props.updated} image={props.image} dismiss={() => setUpvote(false)} />} open={upvote} />
-            <InputField page={<CommentPost id={props.id} content={props.content} username={props.username} first_name={props.first_name} last_name={props.last_name} created={props.created} updated={props.updated} image={props.image} dismiss={() => setComment(false)} />} open={commentOpen} />
+
+
 
         </Container >
 

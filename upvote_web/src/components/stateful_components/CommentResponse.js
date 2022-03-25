@@ -7,7 +7,7 @@ function CommentResponse(props) {
     return (
         <Container>
             <div className='hor'></div>
-            <VotableHeader username={props.user} first_name={props.first_name} last_name={props.last_name} created={props.created} updated={props.udated} />
+            <VotableHeader user={props.user} first_name={props.first_name} last_name={props.last_name} created={props.created} updated={props.udated} />
             <VotableBody content={props.content} />
 
         </Container>

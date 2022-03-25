@@ -13,14 +13,14 @@ import VotableHeader from '../../components/stateful_components/VotableHeader'
 import { InputField } from '../../components/stateful_components/InputField'
 import UpvoteCreatedPost from '../../components/stateful_components/UpvotePost'
 import CommentPost from '../../components/stateful_components/CommentPost'
+import PopUpContext from '../../context/PopUpContext'
 TimeAgo.addDefaultLocale(en)
 
 function VotableDetail() {
     const { tokens } = useContext(AuthContext)
     const { id } = useParams()
     const timeAgo = new TimeAgo()
-    const [upvote, setUpvote] = useState()
-    const [comment, setComment] = useState()
+    const { setUpvote, setComment } = useContext(PopUpContext)
 
     const loadVotable = async () => {
         const response = await api.get("votables/" + id, tokens && {
@@ -41,7 +41,7 @@ function VotableDetail() {
     console.log(data)
     return (
         <Container>
-            <VotableHeader first_name={data.first_name} last_name={data.last_name} username={data.user} created={data.created} updated={data.updated} />
+            <VotableHeader first_name={data.first_name} last_name={data.last_name} user={data.user} created={data.created} updated={data.updated} />
 
             <Body>
                 {data.content}
@@ -49,15 +49,14 @@ function VotableDetail() {
 
             </Body>
             <Actions>
-                <IconLabelButton value={data.upvotes.paid__sum ? data.upvotes.paid__sum : 0} icon="bi-arrow-up-square" hover="white" onClick={() => !data.upvoted && setUpvote(true)} color={data.upvoted ? "white" : "var(--main-grey-color)"} />
-                <IconLabelButton value={data.comments} icon="bi-chat" hover='var(--comment-color)' onClick={() => setComment(true)} />
+                <IconLabelButton value={data.upvotes.paid__sum ? data.upvotes.paid__sum : 0} icon="bi-arrow-up-square" hover="white" onClick={() => !data.upvoted && setUpvote(data)} color={data.upvoted ? "white" : "var(--main-grey-color)"} />
+                <IconLabelButton value={data.comments} icon="bi-chat" hover='var(--comment-color)' onClick={() => setComment(data)} />
                 <IconLabelButton value={data.shares} icon="bi-link" hover='var(--share-color)' />
                 <IconLabelButton value={data.stories} icon="bi-arrow-return-right" hover='var(--repost-color)' />
             </Actions>
 
             <Comments id={id} />
-            <InputField page={<UpvoteCreatedPost id={data.id} content={data.content} username={data.user} first_name={data.first_name} last_name={data.last_name} created={data.created} updated={data.updated} image={data.image} dismiss={() => setUpvote(false)} />} open={upvote} />
-            <InputField page={<CommentPost id={data.id} content={data.content} username={data.user} first_name={data.first_name} last_name={data.last_name} created={data.created} updated={data.updated} image={data.image} dismiss={() => setComment(false)} />} open={comment} />
+
         </Container>
     )
 }

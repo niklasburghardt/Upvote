@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
     let [loading, setLoading] = useState(true)
     let [userInfo, setUserInfo] = useState()
 
+
     const history = useNavigate()
     let loginUser = async (e) => {
         e.preventDefault()

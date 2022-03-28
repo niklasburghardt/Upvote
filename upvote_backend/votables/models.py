@@ -95,4 +95,4 @@ class Story(models.Model):
     user = models.ForeignKey(
         User,  related_name="stories", on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
-    comment = models.CharField(max_length=140)
+    comment = models.CharField(max_length=255)

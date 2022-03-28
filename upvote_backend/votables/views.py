@@ -175,7 +175,7 @@ class StoryViewset(generics.ListCreateAPIView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        return qs.filter(comment__id=self.kwargs["pk"])
+        return qs.filter(votable__id=self.kwargs["pk"])
 
 
 class LikeViewset(generics.ListAPIView):

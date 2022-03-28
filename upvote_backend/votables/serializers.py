@@ -113,6 +113,10 @@ class ShareSerializer(serializers.ModelSerializer):
 
 
 class StorySerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')
+    first_name = serializers.ReadOnlyField(source='user.first_name')
+    last_name = serializers.ReadOnlyField(source='user.last_name')
+
     class Meta:
         model = Story
         fields = '__all__'

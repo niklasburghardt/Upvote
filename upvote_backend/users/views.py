@@ -1,5 +1,6 @@
 
 
+from django.utils import timezone
 from rest_framework import viewsets, status, mixins, generics
 from rest_framework import permissions, authentication
 from rest_framework.response import Response
@@ -9,9 +10,9 @@ from django.contrib.auth.models import User
 from users.models import Follow
 
 
-from votables.models import Like, Votable, Comment, Upvote
+from votables.models import Like, Story, Votable, Comment, Upvote
 from .serializers import FollowSerializer, UserSerializer
-from votables.serializers import VotableSerializer
+from votables.serializers import StorySerializer, VotableSerializer
 
 from users import serializers
 
@@ -64,3 +65,13 @@ class FollowUnfollow(generics.CreateAPIView):
             if follower == followed:
                 return Response(status=status.HTTP_404_NOT_FOUND)
             serializer.save(follower=self.request.user)
+
+
+class StoryViewset(generics.ListAPIView):
+    queryset = Story.objects.all()
+    serializer_class = StorySerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        yesterday = timezone.now() - timezone.timedelta(1)
+        return qs.filter(created__gte=yesterday)

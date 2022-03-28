@@ -104,14 +104,14 @@ function LittleVotable(props) {
                 {props.content}
                 <Image src="/images/grand.jpg" />
             </Body> */}
-            <VotableBody content={props.content} navigate={navigate} image={props.image} key={props.id} onClick={navigate} />
 
-            <Actions>
-                <IconLabelButton value={props.upvotes ? props.upvotes : 0} icon="bi-arrow-up-square" onClick={() => !props.upvoted && setUpvote(props)} hover="white" color={props.upvoted ? "white" : "var(--main-grey-color)"} />
-                <IconLabelButton value={props.comments} icon="bi-chat" hover="var(--comment-color)" onClick={() => setComment(props)} />
-                <IconLabelButton value={props.shared ? props.shared : 0} icon="bi-link" hover="var(--share-color)" />
-                <IconLabelButton value={props.stories ? props.stories : 0} icon="bi-arrow-return-right" hover="var(--repost-color)" />
-            </Actions>
+            <Body onClick={navigate}>
+                {props.content}
+                {props.image && <Image src={props.image} />}
+
+            </Body>
+
+
             {/* <div>
                 <button onClick={deleteUpvote} className='hover:bg-blue-100 hover:rounded transition-all bg-white p-2 focus:bg-blue-300'>Delete</button>
                 <button onClick={loadComments} className='hover:bg-blue-100 hover:rounded transition-all bg-white p-2 focus:bg-blue-300'>Show</button>
@@ -131,7 +131,7 @@ const Container = styled.div`
     margin-bottom: 20px;
     border-radius: 10px;
     background-color: var(--second-background);
-    min-width: 600px;
+    
     transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     &:hover{
         background-color: var(--hover-background)
@@ -170,24 +170,30 @@ const ProfilePicture = styled.img`
     border-radius: 50%;
     
 `
-const Body = styled.div`
-    font-size: 16px;
-    margin-top: 8px;
 
-`
 const Actions = styled.div`
     margin: 16px 20px 0px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 `
+
+const Body = styled.div`
+    font-size: 16px;
+    margin-top: 0px;
+
+`
 const Image = styled.img`
     display: block;
-    width: 100%;
+    object-fit: contain;
+    
     border-radius: 10px;
     margin-top: 8px;
+    
+    max-width:100%;
+    max-height:100%;
+    
 `
-
 
 
 export default LittleVotable

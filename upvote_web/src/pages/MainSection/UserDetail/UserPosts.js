@@ -75,11 +75,7 @@ function UserPosts({ username }) {
     }
 
 
-    if (status === "error") {
-        return <div>
-            Error...
-        </div>
-    }
+
 
 
 
@@ -127,7 +123,7 @@ function UserPosts({ username }) {
             <div>
                 {data.pages.map((group, i) => (
                     <React.Fragment key={i}>
-                        {group.results.map(result => (<HomePageVotable openUpvote={openUpvote} last_name={result.last_name} first_name={result.first_name} user={result.user} content={result.content} created={result.created} updated={result.updated} comments={result.comments} upvotes={result.upvotes.paid__sum} shared={result.shares} stories={result.stories} id={result.id} delete={deleteVotable.mutate}></HomePageVotable>))}
+                        {group.results.map(result => (<HomePageVotable image={result.image} openUpvote={openUpvote} last_name={result.last_name} first_name={result.first_name} user={result.user} content={result.content} created={result.created} updated={result.updated} comments={result.comments} upvotes={result.upvotes.paid__sum} shared={result.shares} stories={result.stories} id={result.id} delete={deleteVotable.mutate}></HomePageVotable>))}
                     </React.Fragment>
                 ))}
             </div>

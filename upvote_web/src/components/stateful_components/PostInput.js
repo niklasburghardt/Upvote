@@ -8,7 +8,7 @@ function PostInput({ text, setText }) {
             <form action="">
                 <div className='post-head'>
                     <UserPicture src="/images/obama.jpg" />
-                    <TextInputField rows="5" placeholder="Comment here" onChange={(e) => setText(e.target.value)} />
+                    <TextInputField rows="5" placeholder="Comment here" onChange={(e) => setText(e.target.value)} spellCheck="false" />
 
                 </div>
 

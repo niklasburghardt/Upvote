@@ -79,12 +79,6 @@ function Home() {
     }
 
 
-    if (status === "error") {
-        return <div>
-            Error...
-        </div>
-    }
-
 
 
     const loadNext = () => {

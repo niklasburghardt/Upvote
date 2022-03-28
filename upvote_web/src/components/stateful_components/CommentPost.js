@@ -18,7 +18,7 @@ function CommentPost(props) {
     return (
         <Container>
             <VotableHeader first_name={props.first_name} last_name={props.last_name} user={props.username} created={props.created} updated={props.updated} dismiss={props.dismiss} />
-            <VotableSmallBody content={props.content} navigate={props.navigate} />
+            <VotableSmallBody content={props.content} navigate={props.navigate} image={props.image} />
             <div className='divider' />
 
             <PostInput text={text} setText={setText} spellCheck="false" autoFocus />

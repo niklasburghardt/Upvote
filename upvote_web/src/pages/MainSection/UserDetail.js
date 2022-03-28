@@ -61,7 +61,7 @@ function UserDetail() {
     )
 }
 const Container = styled.div`
-
+    
 `
 const User = styled.div`
     margin-bottom: 40px;

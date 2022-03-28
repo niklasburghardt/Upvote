@@ -45,7 +45,7 @@ function UpvotePost(props) {
         <Container>
             <form action="">
                 <VotableHeader first_name={props.first_name} last_name={props.last_name} username={props.username} created={props.created} updated={props.updated} dismiss={props.dismiss} />
-                <VotableSmallBody content={props.content} navigate={props.navigate} />
+                <VotableSmallBody content={props.content} navigate={props.navigate} image={props.image} />
                 <Upvote>
                     <CurrentUpvotes>
                         <div className='current'>

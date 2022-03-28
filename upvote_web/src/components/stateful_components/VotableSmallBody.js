@@ -10,7 +10,7 @@ function VotableSmallBody({ image, content }) {
     }
     return (
         <Body >
-            <Image src="/images/grand.jpg" />
+            <Image src={image} />
             {content}
         </Body>
     )

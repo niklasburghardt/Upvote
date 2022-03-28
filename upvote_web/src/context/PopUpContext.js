@@ -32,8 +32,8 @@ export const PopUpProvider = ({ children }) => {
 
     }
     const openStory = (props) => {
-        if (comment == true) {
-            setComment(false)
+        if (story == true) {
+            setStory(false)
             return
         }
         setStory(true)

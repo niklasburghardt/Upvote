@@ -29,11 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = (
-    os.path.join(BASE_DIR, "media")
-)
-
 
 # Application definition
 
@@ -183,3 +178,8 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': datetime.timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': datetime.timedelta(days=1),
 }
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = (
+    os.path.join(BASE_DIR, "media")
+)

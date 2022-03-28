@@ -20,8 +20,10 @@ function CreatePost({ dismiss }) {
         e.preventDefault()
         const result = await postVotable(tokens.access, text, image)
         console.log(result)
+        setText("")
+        setImage(null)
         const upvote = await upvoteVotable(tokens.acces, result.id)
-
+        dismiss()
         openUpvote(true)
     }
     const toggleUpvote = (e) => {
@@ -39,7 +41,7 @@ function CreatePost({ dismiss }) {
             <form action="">
                 <div className='post-head'>
                     <UserPicture src="/images/obama.jpg" />
-                    <TextInputField rows="5" placeholder="What do you want to tell the world?" onChange={(e) => setText(e.target.value)} />
+                    <TextInputField rows="5" placeholder="What do you want to tell the world?" onChange={(e) => setText(e.target.value)} value={text} spellCheck="false" />
                     <img className="cancle-button" src='/icons/x.svg' onClick={dismiss} />
                 </div>
 
@@ -60,7 +62,7 @@ function CreatePost({ dismiss }) {
                     <div className="end">
                         <Progress>{text.length}</Progress>
                         <PostButton onClick={post}>
-                            NEXT
+                            POST
                         </PostButton>
                     </div>
                 </Actions>
@@ -68,7 +70,7 @@ function CreatePost({ dismiss }) {
             {/* <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 2 }} open={upvoteOpen}>
                 <UpvoteCreatedPost dismiss={dismiss} back={toggleUpvote} text={text} image={image} />
             </Backdrop> */}
-            <InputField open={upvoteOpen} page={<UpvoteCreatedPost dismiss={dismiss} back={toggleUpvote} text={text} image={image} />} />
+            {/* <InputField open={upvoteOpen} page={<UpvoteCreatedPost dismiss={dismiss} back={toggleUpvote} text={text} image={image} />} /> */}
         </>
     )
 }

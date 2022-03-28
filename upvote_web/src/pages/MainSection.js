@@ -38,6 +38,8 @@ const Container = styled.div`
     padding: 0px 0px;
     display: flex;
     
+    
+    
     .main-divider{
         width: 1px;
         background-color: var(--main-grey-color);

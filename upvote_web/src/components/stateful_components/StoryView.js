@@ -1,12 +1,19 @@
 import styled from 'styled-components'
 import React from 'react'
 import { Backdrop } from '@mui/material'
+import VotableHeader from './VotableHeader'
+import StoryHeader from './StoryHeader'
+import LittleVotable from './LittleVotable'
 
 function StoryView(props) {
     return (
         <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={props.open}>
             <Container>
-                Nice
+                <div className='post-head'>
+                    <StoryHeader first_name={props.first_name} last_name={props.last_name} user={props.username} created={props.created} updated={props.updated} />
+                    <img className="cancle-button" src='/icons/x.svg' onClick={props.dismiss} />
+                </div>
+                <LittleVotable />
             </Container>
         </Backdrop>
     )
@@ -23,6 +30,7 @@ const Container = styled.div`
     .post-head{
         display: flex;
         align-items: flex-start;
+        justify-content: space-between;
         min-height: 360px;
         .cancle-button{
             cursor: pointer;

@@ -3,8 +3,12 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-def getImagePath(instance, filename):
-    return "/api/".join(["images", str(instance.id)+"-" + filename])
+def upload_to(instance, filename):
+    return 'votable_images/{filename}'.format(filename=filename)
+
+
+def getImagePath():
+    return ""
 
 
 class Votable(models.Model):
@@ -14,7 +18,7 @@ class Votable(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     image = models.ImageField(
-        null=True, blank=True, upload_to=getImagePath)
+        null=True, blank=True, upload_to=upload_to)
 
     def __str__(self):
         return self.content[0:50]

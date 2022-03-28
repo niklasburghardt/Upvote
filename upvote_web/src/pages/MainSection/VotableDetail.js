@@ -30,7 +30,7 @@ function VotableDetail() {
         })
         return response.data
     }
-    const { data, status } = useQuery("votable", loadVotable)
+    const { data, status } = useQuery("votable" + id, loadVotable)
     if (status === "loading") {
         console.log(data)
         return <div>Loading... ... ...</div>
@@ -45,7 +45,7 @@ function VotableDetail() {
 
             <Body>
                 {data.content}
-                <Image src="/images/grand.jpg" />
+                <Image src={data.image} />
 
             </Body>
             <Actions>

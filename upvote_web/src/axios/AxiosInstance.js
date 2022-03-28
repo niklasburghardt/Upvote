@@ -5,7 +5,8 @@ const api = axios.create({
     baseURL: 'http://localhost:8000/api/',
     timeout: 1000,
     headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": localStorage.getItem("authTokens") ? "Bearer " + localStorage.getItem("authTokens").access : null
     }
 })
 
@@ -46,20 +47,24 @@ const respondComment = async (auth, comment, content) => {
     return response
 }
 const postVotable = async (auth, content, image, upvotes) => {
-    const options = {
-        method: "POST",
+    let formData = new FormData()
+    formData.append("content", content)
+    formData.append("upvotes", 1)
+    if (image) {
+        formData.append("image", image)
+    }
+
+
+    const config = {
+
         headers: {
             "Authorization": "Bearer " + auth,
-            "Content-Type": "application/json"
+            "Content-Type": "multipart/form-data"
         },
-        body: JSON.stringify({
-            "content": content,
-            "upvotes": upvotes,
-
-        })
     }
-    const response = await fetch("http://localhost:8000/api/votables/", options)
-    return response.json()
+    // const response = await fetch("http://localhost:8000/api/votables/", options)
+    // return response.json()
+    return api.post("http://localhost:8000/api/votables/", formData, config)
 }
 const postComment = async (auth, content, image, votable) => {
     const options = {

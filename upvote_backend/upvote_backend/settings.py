@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 import datetime
 
@@ -27,6 +28,11 @@ SECRET_KEY = 'django-insecure-uq&15&lq2zd^rel8gaq0%xtmers8bafy78u=23r^)di7=#v$pr
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = (
+    os.path.join(BASE_DIR, "media")
+)
 
 
 # Application definition

@@ -1,12 +1,17 @@
 import styled from 'styled-components'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useInfiniteQuery, useQuery, useQueryClient } from 'react-query'
 import api from '../../../axios/AxiosInstance'
 import Comment from '../../../components/stateful_components/Comment'
 import AuthContext from '../../../context/AuthContext'
+import PopUpContext from '../../../context/PopUpContext'
+
 
 function Comments(props) {
     const { tokens } = useContext(AuthContext)
+    const { comment } = useContext(PopUpContext)
+    const [writing, setWriting] = useState(false)
+
     const loadComments = async (pageParam = `votables/${props.id}/comments/`) => {
         const result = await api.get(pageParam, tokens && {
             headers: {
@@ -22,6 +27,7 @@ function Comments(props) {
         //refetchInterval: 5000,
         getNextPageParam: (lastPage, allPages) => lastPage.next,
     })
+
     useEffect(() => {
         let fetching = false
         const onScroll = async (event) => {

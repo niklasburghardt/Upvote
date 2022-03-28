@@ -41,7 +41,7 @@ function Comment(props) {
             return "No"
         }
         let amount = data.pages[0].count - commentsOpen
-        return amount < 0 ? "No" : amount
+        return amount <= 0 ? "No" : amount
     }
 
     const toggleLiked = async () => {

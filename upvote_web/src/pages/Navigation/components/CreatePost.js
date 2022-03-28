@@ -30,7 +30,7 @@ function CreatePost({ dismiss }) {
     const handleFileChange = (event) => {
         if (event.target.files[0]) {
             let image = event.target.files[0]
-            setImage(URL.createObjectURL(image))
+            setImage(image)
         }
         console.log(event.target.files[0])
     }
@@ -43,11 +43,13 @@ function CreatePost({ dismiss }) {
                     <img className="cancle-button" src='/icons/x.svg' onClick={dismiss} />
                 </div>
 
+
                 <Actions>
                     <div className='text-actions'>
-                        <input id="image-input" type="file" name='postImage' onChange={handleFileChange} />
+                        <input id="image-input" type="file" name='image' onChange={handleFileChange} accept="image/*" className='image-upload' />
+
                         <label htmlFor='image-input'>
-                            <IconButton icon="bi-image" className="action" />
+                            <IconButton icon="bi-image" className="action" color={image ? "black" : "white"} />
 
                         </label>
                         <IconButton icon="bi-hash" className="action" />
@@ -155,6 +157,9 @@ const Actions = styled.div`
     }
     .end{
         display: flex;
+    }
+    .image-upload{
+        display:none ;
     }
     
 `

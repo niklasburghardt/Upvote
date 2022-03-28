@@ -8,6 +8,7 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from api.mixins import FromUserQuerySetMixin, OwnerPermissionMixin
+from api.pagination import ResponsePagination
 
 from api.permissions import IsOwnerOrReadOnly
 from users.models import Follow
@@ -17,11 +18,13 @@ from users.serializers import UserSerializer
 from .serializers import CommentSerializer, LikeSerializer, ResponseSerializer, ShareSerializer, StorySerializer, UpvoteSerializer, VotableSerializer
 from votables import serializers
 from django.db.models import Sum, Avg
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class VotableList(generics.ListCreateAPIView):
     queryset = Votable.objects.all()
     serializer_class = VotableSerializer
+    parserr_classes = [MultiPartParser, FormParser]
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -92,6 +95,7 @@ class UpvoteForVotable(generics.ListCreateAPIView):
 class CommentForUpvote(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    pagination_class = ResponsePagination
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -105,6 +109,7 @@ class CommentForUpvote(generics.ListCreateAPIView):
 class RespondToComment(generics.ListCreateAPIView):
     queryset = CommentResponse.objects.all()
     serializer_class = ResponseSerializer
+    page_size = 3
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

@@ -78,6 +78,7 @@ function HomePageVotable(props) {
         return navigator("/votable/" + props.id)
 
     }
+    console.log(props)
     return (
 
         <Container >
@@ -103,7 +104,8 @@ function HomePageVotable(props) {
                 {props.content}
                 <Image src="/images/grand.jpg" />
             </Body> */}
-            <VotableBody content={props.content} navigate={navigate} />
+            <VotableBody content={props.content} navigate={navigate} image={props.image} key={props.id} />
+
             <Actions>
                 <IconLabelButton value={props.upvotes ? props.upvotes : 0} icon="bi-arrow-up-square" onClick={() => !props.upvoted && setUpvote(props)} hover="white" color={props.upvoted ? "white" : "var(--main-grey-color)"} />
                 <IconLabelButton value={props.comments} icon="bi-chat" hover="var(--comment-color)" onClick={() => setComment(props)} />

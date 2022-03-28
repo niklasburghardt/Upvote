@@ -1,11 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function VotableBody({ content, image, navigate }) {
+function VotableBody({ content, image, navigate, key }) {
     return (
         <Body onClick={navigate}>
             {content}
-            {image && <Image src="/images/grand.jpg" />}
+            {image && <Image src={image} />}
+            {key}
         </Body>
     )
 }

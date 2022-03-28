@@ -19,7 +19,7 @@ function UpvotePost(props) {
         props.dismiss()
     }
     const increment = (num) => {
-        if (upvotes + num >= 0) {
+        if (upvotes + num >= 0 && userInfo.upvotes - (upvotes + num) >= 0) {
             setUpvotes(upvotes + num);
             console.log(upvotes)
         }
